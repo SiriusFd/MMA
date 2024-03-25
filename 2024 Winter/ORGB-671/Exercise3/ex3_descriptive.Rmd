@@ -1,0 +1,77 @@
+---
+title: "Excercise 3-Descriptive"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(lubridate)
+library(arrow)
+library(stats)
+library(pROC)
+library(caTools)
+library(ggplot2)
+```
+
+```{r load-data}
+# import data
+data_path <- "/Users/jessica.song/Desktop/MG/!671 Talent Analytics/Excercise3/"
+application <- read_feather(paste0(data_path,"panel_df.feather"))
+application
+```
+
+```{r visualize varibles}
+
+total_count <- nrow(application)
+
+# Filter out duplicates based on 'examiner_id'
+unique_data <- application %>% 
+  distinct(examiner_id, .keep_all = TRUE)
+
+# calculate the total count for normalization
+total_unique_count <- nrow(unique_data)
+
+# Create the bar chart with percentages
+gender_plot <- ggplot(unique_data, aes(x = gender, fill = gender)) +
+  geom_bar() +
+  geom_text(stat = 'count', aes(label = scales::percent((..count..)/total_unique_count)), 
+            vjust = -0.5, position = position_stack(vjust = 0.5)) +
+  theme_minimal() +
+  labs(title = "Frequency of Gender Among Unique Examiners", x = "Gender", y = "Count")
+
+race_plot <- ggplot(unique_data, aes(x = race, fill = race)) +
+  geom_bar() +
+  geom_text(stat = 'count', aes(label = scales::percent((..count..)/total_unique_count)), 
+            vjust = -0.5, position = position_stack(vjust = 0.5)) +
+  theme_minimal() +
+  labs(title = "Frequency of Race Among Unique Examiners", x = "Race", y = "Count")
+
+separation_indicator_plot <- ggplot(application, aes(x = separation_indicator, fill = separation_indicator)) +
+  geom_bar() +
+  geom_text(stat = 'count', aes(label = scales::percent((..count..)/total_count)), 
+            vjust = -0.5, position = position_stack(vjust = 0.5)) +
+  theme_minimal() +
+  labs(title = "Frequency of Separation indicator Among Examiners", x = "Separation", y = "Count")
+
+au_move_indicator_plot <- ggplot(application, aes(x = au_move_indicator, fill = au_move_indicator)) +
+  geom_bar() +
+  geom_text(stat = 'count', aes(label = scales::percent((..count..)/total_count)), 
+            vjust = -0.5, position = position_stack(vjust = 0.5)) +
+  theme_minimal() +
+  labs(title = "Frequency of AU move indicator Among Examiners", x = "AU move", y = "Count")
+
+
+
+# Print the plot
+print(gender_plot)
+print(race_plot)
+print(separation_indicator_plot)
+print(au_move_indicator_plot)
+
+```
+

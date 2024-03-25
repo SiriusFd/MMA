@@ -1,0 +1,460 @@
+---
+---
+---
+
+# Exercise Week 3
+
+```{r}
+library(arrow)
+library(tidyverse)
+library(lubridate)
+
+data_path <- "C:/Users/csg20/Downloads/"
+applications <- read_feather(paste0(data_path,"app_data_starter_coded.feather"))
+```
+
+clean the columns
+
+```{r}
+columns_with_x_suffix <- grep("\\.x$", names(applications), value = TRUE)
+
+names(applications)[names(applications) %in% columns_with_x_suffix] <- sub("\\.x$", '', columns_with_x_suffix)
+
+
+applications <- applications %>% select(-ends_with(".y"))
+```
+
+variable creation
+
+```{r}
+#quarter 
+applications <- applications %>%
+  mutate(
+    quarter = paste0(year(filing_date), "/", quarter(filing_date)),
+  )
+
+# Aggregate applications by quarter and examiner
+applications <- applications %>%
+  group_by(quarter, examiner_id) %>%
+  mutate(new_applications = n_distinct(application_number)) %>%
+  ungroup()
+
+applications <- applications %>%
+  group_by(quarter, examiner_id) %>%
+  mutate(ISSUED_applications = sum(disposal_type == "ISS" & !duplicated(application_number)))
+
+applications <- applications %>%
+  group_by(quarter, examiner_id) %>%
+  mutate(abn_applications = sum(disposal_type == "ABN" & !duplicated(application_number)))
+
+applications <- applications %>%
+  group_by(quarter, examiner_id) %>%
+  mutate(PEN_applications = sum(disposal_type == "PEND" & !duplicated(application_number)))
+
+applications <- applications %>%
+  group_by(quarter,examiner_art_unit) %>%
+  mutate(examiner_art_unit_num =  n_distinct(examiner_id))%>%
+  ungroup()
+```
+
+```{r}
+max_quarter <- "2017/1"
+
+# separation_indicator
+applications <- applications %>%
+  group_by(examiner_id) %>%
+  mutate(max_quarter_examiner = max(quarter)) %>%
+  ungroup() %>%
+  mutate(separation_indicator = if_else(max_quarter_examiner < max_quarter, 1, 0))
+
+applications <- applications[, !(names(applications) == "max_quarter_examiner")]
+```
+
+```{r}
+#au_move_indicator
+applications <- applications %>%
+  group_by(examiner_id) %>%
+  mutate(au_move_indicator = if_else(examiner_art_unit != lag(examiner_art_unit), 1, 0)) %>%
+  ungroup()
+
+applications <- applications %>%
+  mutate(au_move_indicator = if_else(is.na(au_move_indicator), 0, au_move_indicator))
+```
+
+```{r}
+# get the count of au_moves by quarter
+applications <- applications %>%
+  group_by(examiner_id, quarter) %>%
+  mutate(
+    au_moves = sum(au_move_indicator)
+  ) %>%
+  ungroup()
+```
+
+```{r}
+columns_to_exclude <- c(
+  "examiner_art_unit", "examiner_art_unit_num",
+  "women_in_art_unit"
+) # Due to a high number of missing vlaue in the gender value, the quality of the women_in_art_unit is poor, thus excluded
+
+df <- applications[, !(names(applications) %in% columns_to_exclude)]
+colSums(is.na(df))
+```
+
+```{r}
+#drop the na examiner_id rows
+df <- subset(df, !is.na(examiner_id))
+
+quarter_df <- df %>%
+  group_by(examiner_id) %>%
+  distinct(quarter, .keep_all = TRUE) %>%
+  select(examiner_id, quarter, latest_date, separation_indicator, ISSUED_applications, PEN_applications, abn_applications, gender, race, tenure_days, au_moves) %>%
+  arrange(examiner_id, quarter)
+```
+
+```{r}
+#collapse to individual observation
+collapsed_df <- quarter_df %>%
+  group_by(examiner_id) %>%
+  summarize(
+    gender = first(gender),
+    race = first(race),
+    tenure_days = first(tenure_days),
+    ISSUED_applications = sum(ISSUED_applications),
+    abandoned_applications = sum(abn_applications),
+    au_moves = sum(au_moves),
+    PEN_applications = PEN_applications[quarter == last(quarter)],
+    separation_indicator = first(separation_indicator)
+  )
+
+#append NA with 'unknown'
+collapsed_df <- collapsed_df %>%
+  mutate(gender = ifelse(is.na(gender), "unknown", gender))
+```
+
+```{r}
+colSums(is.na(collapsed_df))
+```
+
+```{r}
+summary(collapsed_df)
+```
+
+```{r}
+library(ggplot2)
+
+# Visualization for categorical variables ('gender', 'race', 'separation_indicator')
+categorical_vars <- c("gender", "race", "separation_indicator")
+
+# Loop through the categorical variables to create bar plots
+for (var in categorical_vars) {
+  p <- ggplot(collapsed_df, aes_string(x = var)) + 
+    geom_bar(aes(fill = ..count..), show.legend = FALSE) + 
+    scale_fill_viridis_c() +
+    labs(title = paste("Distribution of", var), x = var, y = "Count") +
+    theme_minimal()
+  print(p)
+}
+```
+
+```{r}
+continuous_vars <- c("tenure_days", "ISSUED_applications", "abandoned_applications", "PEN_applications", "au_moves")
+
+for (var in continuous_vars) {
+  p <- ggplot(collapsed_df, aes_string(x = var)) + 
+    geom_histogram(aes(fill = ..count..), bins = 30, show.legend = FALSE) + 
+    scale_fill_viridis_c() +
+    labs(title = paste("Distribution of", var), x = var, y = "Frequency") +
+    theme_minimal()
+  print(p)
+}
+```
+
+```{r}
+#train, test, validation split
+collapsed_df$separation_indicator <- as.factor(collapsed_df$separation_indicator)
+collapsed_df$gender <- as.factor(collapsed_df$gender)
+collapsed_df$race <- as.factor(collapsed_df$race)
+levels(collapsed_df$separation_indicator) <- make.names(levels(collapsed_df$separation_indicator))
+
+attach(collapsed_df)
+
+X <- collapsed_df[, -which(names(collapsed_df) %in% c("examiner_id", "separation_indicator"))]
+y <- collapsed_df$separation_indicator
+
+set.seed(123)
+
+prop_training <- 0.7
+prop_testing <- 0.2
+prop_validation <- 0.1
+
+n_total <- nrow(collapsed_df)
+n_training <- round(prop_training * n_total)
+n_testing <- round(prop_testing * n_total)
+n_validation <- n_total - n_training - n_testing
+
+row_indices <- sample(1:n_total, n_total)
+
+# Split the data into training, testing, and validation sets
+training_data <- X[row_indices[1:n_training], ]
+testing_data <- X[row_indices[(n_training + 1):(n_training + n_testing)], ]
+validation_data <- X[row_indices[(n_training + n_testing + 1):n_total], ]
+
+# Split the outcome variable accordingly
+training_labels <- y[row_indices[1:n_training]]
+testing_labels <- y[row_indices[(n_training + 1):(n_training + n_testing)]]
+validation_labels <- y[row_indices[(n_training + n_testing + 1):n_total]]
+
+```
+
+model creation
+
+```{r}
+#use AutoML tool to automatically search for the best model and hyperparameters for your dataset.
+library(caret)
+```
+
+```{r}
+target_variable <- "separation_indicator"
+
+formula <- as.formula(paste(target_variable, "~ ."))
+
+data <- cbind(training_data, separation_indicator = training_labels)
+```
+
+```{r}
+library(gbm)
+
+grid_gbm <- expand.grid(
+  n.trees = c(100, 200, 300),           # Number of trees
+  interaction.depth = c(1, 3, 5),       # Depth of tree
+  shrinkage = c(0.01, 0.1),             # Learning rate
+  n.minobsinnode = c(10, 20)            # Minimum number of observations in the terminal nodes
+)
+
+# Define your training control
+ctrl <- trainControl(
+  method = "cv", 
+  number = 10, 
+  classProbs = TRUE, 
+  summaryFunction = twoClassSummary
+)
+
+# Train the models using GBM
+results_gbm <- train(
+  formula,             # Replace with your formula
+  data = data,         # Replace with your dataset
+  trControl = ctrl,    # Training control object
+  tuneGrid = grid_gbm, # The tuning grid for GBM
+  metric = "ROC",      # Evaluation metric
+  method = "gbm"       # GBM model
+)
+
+# Print the results
+print(results_gbm)
+#The final values used for the model were n.trees = 200, interaction.depth = 5, shrinkage = 0.1 and n.minobsinnode = 10.
+```
+
+```{r}
+library(C50)
+
+# Define the grid of hyperparameters for C5.0 with adjusted 'trials' range
+grid_c50 <- expand.grid(
+  model = c("tree", "rules"),  # Type of model
+  trials = c(1, 5, 7),         # Adjusted number of boosting iterations
+  winnow = c(TRUE, FALSE)      # Winnowing process
+)
+
+# The rest of your code remains the same
+ctrl <- trainControl(
+  method = "cv", 
+  number = 10, 
+  classProbs = TRUE, 
+  summaryFunction = twoClassSummary
+)
+
+results_c50 <- train(
+  formula,             # Replace with your formula
+  data = data,         # Replace with your dataset
+  trControl = ctrl,    # Training control object
+  tuneGrid = grid_c50, # The tuning grid for C5.0
+  metric = "ROC",      # Evaluation metric
+  method = "C5.0"      # C5.0 model
+)
+
+print(results_c50)
+#The final values used for the model were trials = 7, model = rules and winnow = FALSE.
+```
+
+```{r}
+library(randomForest)
+
+grid_rf <- expand.grid(
+  mtry = c(2, 4, 6) # Range of values for 'mtry'
+)
+
+# Define your training control
+ctrl <- trainControl(
+  method = "cv", 
+  number = 10, 
+  classProbs = TRUE, 
+  summaryFunction = twoClassSummary
+)
+
+# Train the models using Random Forest
+results_rf <- train(
+  formula,             # Replace with your formula
+  data = data,         # Replace with your dataset
+  trControl = ctrl,    # Training control object
+  tuneGrid = grid_rf,  # The tuning grid for Random Forest
+  metric = "ROC",      # Evaluation metric
+  method = "rf"        # Random Forest model
+)
+
+# Print the results
+print(results_rf)
+#The final value used for the model was mtry = 4.
+```
+
+```{r}
+predictions_gbm <- predict(results_gbm, testing_data, type = "prob")
+predictions_c50 <- predict(results_c50, testing_data, type = "prob")
+predictions_rf <- predict(results_rf, testing_data, type = "prob")
+
+predicted_labels_gbm <- ifelse(predictions_gbm[, "X1"] > 0.5, "X1", "X0")
+predicted_labels_gbm <- factor(predicted_labels_gbm, levels = levels(testing_labels))
+predicted_labels_c50  <- ifelse(predictions_c50[, "X1"] > 0.5, "X1", "X0")
+predicted_labels_c50  <- factor(predicted_labels_c50, levels = levels(testing_labels))
+predicted_labels_rf <- ifelse(predictions_rf[, "X1"] > 0.5, "X1", "X0")
+predicted_labels_rf <- factor(predicted_labels_rf, levels = levels(testing_labels))
+
+perf_gbm <- confusionMatrix(predicted_labels_gbm, testing_labels)
+perf_c50 <- confusionMatrix(predicted_labels_c50, testing_labels)
+perf_rf <- confusionMatrix(predicted_labels_rf, testing_labels)
+
+perf_gbm
+perf_c50
+perf_rf
+```
+
+| **Metric**           | GBM    | C50    | **RF** |
+|----------------------|--------|--------|--------|
+| Accuracy             | 0.8195 | 0.8115 | 0.8159 |
+| Sensitivity          | 0.7299 | 0.7059 | 0.7326 |
+| Specificity          | 0.8638 | 0.8638 | 0.8571 |
+| Pos Pred Value (PPV) | 0.7261 | 0.7193 | 0.7173 |
+| Neg Pred Value (NPV) | 0.8660 | 0.8558 | 0.8663 |
+| Balanced Accuracy    | 0.7969 | 0.7848 | 0.7949 |
+| Kappa                | 0.5929 | 0.5723 | 0.5866 |
+
+GBM appears to be the best overall, given its higher scores in most of the key metrics
+
+```{r}
+library(pROC)
+
+roc_curve_gbm <- roc(response = testing_labels, predictor = predictions_gbm[, "X1"])
+
+# Plot the ROC curve
+plot(roc_curve_gbm, main="ROC Curve for GBM Model")
+abline(a=0, b=1, lty=2, col="red") 
+
+# Calculating AUC
+auc_gbm <- auc(roc_curve_gbm)
+print(paste("AUC for GBM Model:", auc_gbm)) "AUC for GBM Model: 0.902592097445039"
+```
+
+![](https://files.oaiusercontent.com/file-KRELr4NdwuTkWiuRDHny1qOx?se=2024-01-30T17%3A44%3A28Z&sp=r&sv=2021-08-06&sr=b&rscc=max-age%3D299%2C%20immutable&rscd=attachment%3B%20filename%3Dimage.png&sig=QI7BADNoK2RlK/1uOM5%2B1TRnqQFcIr430H/w54JtCAM%3D)
+
+Observations from your ROC curve:
+
+-   The ROC curve is significantly above the red diagonal line, suggesting that the GBM model has good predictive power and performs substantially better than a random classifier.
+
+-   Although the ROC curve does not reach the ideal point, it still indicates a good balance between sensitivity and specificity, implying that the model predicts true positives well without a high false positive rate.
+
+-   The model exhibits a high true positive rate over most specificity levels, which means it is adept at correctly identifying the positive class ("X1" - Examiner left).
+
+AUC for the model has been calculated as 0.9026, which is a strong performance metric, indicating that the GBM model is excellent at distinguishing between the two classes.
+
+```{r}
+#Model Intepretation
+par(mar = c(5, 8, 4, 2) + 0.1)
+
+gbm_importance <- summary(results_gbm$finalModel)
+print(gbm_importance)
+```
+
+| var                    |     rel.inf |
+|:-----------------------|------------:|
+| PEN_applications       | 45.28618931 |
+| ISSUED_applications    | 21.05104819 |
+| abandoned_applications | 14.01193647 |
+| tenure_days            | 10.81360536 |
+| au_moves               |  6.51042746 |
+| racewhite              |  1.01820144 |
+| genderunknown          |  0.54419861 |
+| gendermale             |  0.37176997 |
+| raceblack              |  0.35001965 |
+| raceHispanic           |  0.04260356 |
+
+```{r}
+#Apply model on validation set
+# Assuming 'validation_data' is your validation subset
+validation_predictions_gbm <- predict(results_gbm, newdata = validation_data, type = "prob")
+
+# Convert predictions to a binary factor with levels matching 'validation_data$outcome'
+validation_predicted_labels_gbm <- ifelse(validation_predictions_gbm[, "X1"] > 0.5, "X1", "X0")
+validation_predicted_labels_gbm <- factor(validation_predicted_labels_gbm, levels = levels(validation_labels))
+
+# Evaluate performance on the validation set
+validation_perf_gbm <- confusionMatrix(validation_predicted_labels_gbm, validation_labels)
+print(validation_perf_gbm)
+
+###
+#Confusion Matrix and Statistics:
+#
+#Reference
+#Prediction   X0   X1
+#        X0   125  55
+#        X1   65   319
+
+#Metrics:
+#- Accuracy: 78.72%
+#- 95% CI: (75.11%, 82.03%)
+#- No Information Rate: 66.31%
+#- P-Value [Acc > NIR]: < 0.00000006334
+#- Kappa: 0.5175
+#- Mcnemar's Test P-Value: 0.4113
+#- Sensitivity: 65.79%
+#- Specificity: 85.29%
+#- Positive Predictive Value (PPV): 69.44%
+#- Negative Predictive Value (NPV): 83.07%
+#- Prevalence: 33.69%
+#- Detection Rate: 22.16%
+#- Detection Prevalence: 31.91%
+#- Balanced Accuracy: 75.54%
+#
+#'Positive' Class: X0
+###
+```
+
+The model is relatively strong, given its accuracy and balanced accuracy metrics, which are considerably higher than the No Information Rate of 66.31%. The Positive Predictive Value and Negative Predictive Value are also quite good, suggesting the model's predictions are reliable.
+
+### **Recommendations:**
+
+1.  **Focus on High-Impact Variables**: The variables 'PEN_applications', 'ISSUED_applications', and 'abandoned_applications' have the highest relative influence scores. This suggests that the number and types of applications an examiner handles are strongly associated with the likelihood of exit. We suggest balancing the workload more evenly across examiners or reviewing the types of applications assigned to individuals with higher exit probabilities.
+
+2.  **Examine Tenure**: 'tenure_days' also appears to be an important factor. If examiners with certain tenure lengths are more likely to exit, consider implementing targeted retention strategies. This could involve career development opportunities, reassessing job roles, or offering incentives for milestone tenures.
+
+3.  **Monitor Mobility**: 'au_moves', representing mobility across Art Units, is significant and might indicate that frequent moves are a stressor leading to exit. Ensure that moves are necessary, beneficial to the examiner's career path, and supported with adequate transition time and resources.
+
+4.  **Demographic Factors**: While 'race' and 'gender' variables have less relative influence, any association they have with exit rates should be carefully managed to ensure equity. It\'s essential to ensure these factors are not contributing to a hostile work environment or inequitable conditions that could lead to increased exit rates.
+
+5.  **Sensitivity vs. Specificity Trade-off**: The model is currently more specific than sensitive. If it is more critical to identify those likely to not exit (even at the risk of false alarms), consider adjusting the decision threshold to increase sensitivity. However, if the goal is to maintain a low false alarm rate (high specificity), the current threshold may be appropriate.
+
+6.  **Actionable Strategies**:
+
+    -   **Mentorship Programs**: Develop mentorship and support programs, especially for examiners in high-risk categories.
+
+    -   **Workload Analysis**: Perform a detailed analysis of workload distribution to identify any correlations with exit rates.
+
+    -   **Exit Interviews**: Conduct exit interviews to gather qualitative data that might explain the quantitative findings of the model.
