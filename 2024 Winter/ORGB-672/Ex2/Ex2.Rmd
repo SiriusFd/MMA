@@ -1,0 +1,141 @@
+---
+title: "Exercise 2"
+output:
+  pdf_document: default
+  html_notebook: default
+  html_document:
+    df_print: paged
+---
+
+## 1. Create a data-set where edges are based on seat adjacency as described above.
+
+```{r}
+library(igraph)
+library(ggplot2)
+library(ggraph)
+library(tidygraph)
+```
+
+```{r}
+data <- read.csv("C:/Users/csg20/OneDrive/Desktop/Facebook Bus.csv", header = FALSE)
+
+colnames(data) <- c("from", "to")
+
+data
+```
+
+## 2. For each seat choice (A-D), assuming the other open seats are filled, calculate:
+
+-- Degree centrality
+-- Closeness centrality
+-- Betweenness centrality
+
+```{r}
+
+g <- graph_from_data_frame(data, directed = FALSE)
+
+degree_centrality <- degree(g, mode="all")
+closeness_centrality <- closeness(g, mode="all")
+betweenness_centrality <- betweenness(g, directed = FALSE)
+
+seats <- c("A", "B", "C", "D")
+```
+
+```{r}
+cat("Degree Centrality:\n")
+for (seat in seats) {
+  cat(sprintf('"%s": %d\n', seat, degree_centrality[seat]))
+}
+```
+
+```{r}
+cat("Closeness Centrality:\n")
+for (seat in seats) {
+  cat(sprintf('"%s": %f\n', seat, closeness_centrality[seat]))
+}
+
+```
+
+```{r}
+cat("Betweenness Centrality:\n")
+for (seat in seats) {
+  cat(sprintf('"%s": %f\n', seat, betweenness_centrality[seat]))
+}
+```
+
+## 3. Discuss possible consequences of your choice of a seat. When would this choice be beneficial? When would it be not so beneficial?
+
+### Degree Centrality
+
+A higher degree centrality means more direct connections. Seats B, C, and D have the highest degree centrality (10), indicating that choosing one of these seats would maximize the number of coworkers you can directly communicate with on any given ride, while seat A has lower degree centrality (6), suggesting fewer direct connections.
+
+*Benefits of High Degree Centrality:*
+
+Choosing a seat with higher degree centrality offers more opportunities to interact with different coworkers, which can be beneficial for networking and getting to know a broader section of the company's staff.
+
+*Drawbacks of High Degree Centrality:*
+
+While having many direct connections offers greater networking opportunities, it might also lead to feeling overwhelmed by the need to maintain multiple conversations or social interactions, especially if you prefer more in-depth conversations over numerous superficial ones.
+
+### Closeness Centrality
+
+A higher closeness indicates that a seat is more centrally located, making it easier to reach all other nodes. Seats B and C have the highest closeness centrality, which aligns with their high degree centrality, indicating not only do they have many direct connections but are also more centrally located within the network of seats.
+
+*Benefits of High Closeness Centrality:*
+
+Being in a seat with high closeness centrality means you're in a good position to develop connections more quickly with everyone on the bus over time since you're closer to all other seats.
+
+*Drawbacks of High Closeness Centrality:*
+
+A central position might leads to less personal space or quiet time, as you're easily accessible to more people for conversations.
+
+### Betweenness Centrality
+
+A higher betweenness value indicates that a seat acts as a bridge or connector between different groups of people. Seat A has the highest betweenness centrality, making it a strategic position for influencing the flow of information between different groups.
+
+*Benefits of High Betweenness Centrality:*
+
+Choosing seat A positions you as a potential influencer within the network, as you can control the flow of information between different groups.
+
+*Drawbacks of High Betweenness Centrality:*
+
+Being in a position of influence could also make you facing pressure to mediate or facilitate interactions between others, which might not always be desirable.
+
+## 4. Plot the network graph with labels and centrality values
+
+```{r}
+tg <- as_tbl_graph(g)
+
+# Calculate PageRank and edge betweenness centrality, and create the plot
+tg %>%
+  activate(nodes) %>%
+  mutate(pagerank = centrality_pagerank()) %>%
+  activate(edges) %>%
+  mutate(betweenness = centrality_edge_betweenness()) %>%
+  ggraph(layout = 'kk') + 
+  geom_edge_link(aes(alpha = betweenness)) + 
+  geom_node_point(aes(size = pagerank, colour = pagerank)) + 
+  geom_node_text(aes(label = name), repel = TRUE, color = "black") +
+  scale_color_continuous(guide = 'legend') + 
+  theme_graph(base_family="sans") + 
+  ggtitle("Fakebook Bus Network Analysis")
+```
+
+```{r}
+pagerank_scores <- tg %>% 
+  mutate(pagerank = centrality_pagerank()) %>% 
+  pull(pagerank)
+
+most_important_node <- which.max(pagerank_scores)
+
+tg <- tg %>%
+  mutate(similarity = abs(pagerank_scores - pagerank_scores[most_important_node]))
+
+tg %>%
+  ggraph(layout = 'kk') + 
+  geom_edge_link(colour = "grey") + 
+  geom_node_point(aes(size = similarity), colour = 'steelblue') + 
+  geom_node_text(aes(label = name), repel = TRUE, color = "black") +
+  theme_graph(base_family="sans") + 
+  ggtitle("Fakebook Bus Network Analysis")
+```
