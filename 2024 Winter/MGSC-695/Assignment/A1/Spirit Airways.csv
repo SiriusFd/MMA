@@ -1,0 +1,9 @@
+﻿Route,Q-class fare price,Y-class fare price,Expected demand for Q-class,Expected demand for Y-class
+Bos-Chicago,200,230,25,20
+Bos-SF,320,420,55,40
+Bos-LA,400,490,65,25
+NY-Chicago,250,290,24,16
+NY-SF,410,550,65,50
+NY-LA,450,550,40,35
+Chicago-SF,200,230,21,20
+Chicago-LA,250,300,25,14
