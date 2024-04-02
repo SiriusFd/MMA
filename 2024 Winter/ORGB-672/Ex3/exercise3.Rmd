@@ -1,0 +1,450 @@
+---
+title: "Exercise 3 starter"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(lubridate)
+library(arrow)
+```
+
+## Load data
+
+Load the following data: + applications from `app_data_sample.parquet` + edges from `edges_sample.csv`
+
+```{r load-data}
+# change to your own path!
+data_path = "C:/Users/csg20/OneDrive/Desktop/Git/MMA/2024 Winter/ORGB-672/Ex3/"
+app_data_sample <- read_parquet(paste0(data_path,"app_data_sample.parquet"))
+
+app_data_sample
+```
+
+## Get gender for examiners
+
+We'll get gender based on the first name of the examiner, which is recorded in the field `examiner_name_first`. We'll use library `gender` for that, relying on a modified version of their own [example](https://cran.r-project.org/web/packages/gender/vignettes/predicting-gender.html).
+
+Note that there are over 2 million records in the applications table -- that's because there are many records for each examiner, as many as the number of applications that examiner worked on during this time frame. Our first step therefore is to get all *unique* names in a separate list `examiner_names`. We will then guess gender for each one and will join this table back to the original dataset. So, let's get names without repetition:
+
+```{r gender-1}
+library(gender)
+#install_genderdata_package() # only run this line the first time you use the package, to get data for it
+
+# get a list of first names without repetitions
+examiner_names <- app_data_sample %>% 
+  distinct(examiner_name_first)
+
+examiner_names
+```
+
+Now let's use function `gender()` as shown in the example for the package to attach a gender and probability to each name and put the results into the table `examiner_names_gender`. Note that the first time you run this code, you need to say "Yes" in the console to download the gender data.
+
+```{r gender-2}
+# get a table of names and gender
+examiner_names_gender <- examiner_names %>% 
+  do(results = gender(.$examiner_name_first, method = "ssa")) %>% 
+  unnest(cols = c(results), keep_empty = TRUE) %>% 
+  select(
+    examiner_name_first = name,
+    gender,
+    proportion_female
+  )
+
+examiner_names_gender
+```
+
+Finally, let's join that table back to our original applications data and discard the temporary tables we have just created to reduce clutter in our environment.
+
+```{r gender-3}
+# remove extra colums from the gender table
+examiner_names_gender <- examiner_names_gender %>% 
+  select(examiner_name_first, gender)
+
+# joining gender back to the dataset
+applications <- app_data_sample %>% 
+  left_join(examiner_names_gender, by = "examiner_name_first")
+
+# cleaning up
+rm(examiner_names)
+rm(examiner_names_gender)
+gc()
+
+```
+
+## Guess the examiner's race
+
+We'll now use package `wru` to estimate likely race of an examiner. Just like with gender, we'll get a list of unique names first, only now we are using surnames.
+
+```{r race-1}
+library(wru)
+
+examiner_surnames <- applications %>% 
+  select(surname = examiner_name_last) %>% 
+  distinct()
+
+examiner_surnames
+```
+
+We'll follow the instructions for the package outlined here <https://github.com/kosukeimai/wru>.
+
+```{r race-2}
+examiner_race <- predict_race(voter.file = examiner_surnames, surname.only = T) %>% 
+  as_tibble()
+
+examiner_race
+```
+
+As you can see, we get probabilities across five broad US Census categories: white, black, Hispanic, Asian and other. (Some of you may correctly point out that Hispanic is not a race category in the US Census, but these are the limitations of this package.)
+
+Our final step here is to pick the race category that has the highest probability for each last name and then join the table back to the main applications table. See this example for comparing values across columns: <https://www.tidyverse.org/blog/2020/04/dplyr-1-0-0-rowwise/>. And this one for `case_when()` function: <https://dplyr.tidyverse.org/reference/case_when.html>.
+
+```{r race-3}
+examiner_race <- examiner_race %>% 
+  mutate(max_race_p = pmax(pred.asi, pred.bla, pred.his, pred.oth, pred.whi)) %>% 
+  mutate(race = case_when(
+    max_race_p == pred.asi ~ "Asian",
+    max_race_p == pred.bla ~ "black",
+    max_race_p == pred.his ~ "Hispanic",
+    max_race_p == pred.oth ~ "other",
+    max_race_p == pred.whi ~ "white",
+    TRUE ~ NA_character_
+  ))
+
+examiner_race
+```
+
+Let's join the data back to the applications table.
+
+```{r race-4}
+# removing extra columns
+examiner_race <- examiner_race %>% 
+  select(surname,race)
+
+applications <- applications %>% 
+  left_join(examiner_race, by = c("examiner_name_last" = "surname"))
+
+rm(examiner_race)
+rm(examiner_surnames)
+gc()
+```
+
+## Examiner's tenure
+
+To figure out the timespan for which we observe each examiner in the applications data, let's find the first and the last observed date for each examiner. We'll first get examiner IDs and application dates in a separate table, for ease of manipulation. We'll keep examiner ID (the field `examiner_id`), and earliest and latest dates for each application (`filing_date` and `appl_status_date` respectively). We'll use functions in package `lubridate` to work with date and time values.
+
+```{r tenure-1}
+library(lubridate) # to work with dates
+
+examiner_dates <- applications %>% 
+  select(examiner_id, filing_date, appl_status_date) 
+
+examiner_dates
+```
+
+The dates look inconsistent in terms of formatting. Let's make them consistent. We'll create new variables `start_date` and `end_date`.
+
+```{r tenure-2}
+examiner_dates <- examiner_dates %>% 
+  mutate(start_date = ymd(filing_date), end_date = as_date(dmy_hms(appl_status_date)))
+```
+
+Let's now identify the earliest and the latest date for each examiner and calculate the difference in days, which is their tenure in the organization.
+
+```{r tenure-3}
+examiner_dates <- examiner_dates %>% 
+  group_by(examiner_id) %>% 
+  summarise(
+    earliest_date = min(start_date, na.rm = TRUE), 
+    latest_date = max(end_date, na.rm = TRUE),
+    tenure_days = interval(earliest_date, latest_date) %/% days(1)
+    ) %>% 
+  filter(year(latest_date)<2018)
+
+examiner_dates
+```
+
+Joining back to the applications data.
+
+```{r tenure-4}
+applications <- applications %>% 
+  left_join(examiner_dates, by = "examiner_id")
+
+rm(examiner_dates)
+gc()
+```
+
+## Pick two workgroups you want to focus on (remember that a workgroup is represented by the first 3 digits of \`examiner_art_unit\` value)
+
+By research online, I found [**Technology Center 2100**](https://www.uspto.gov/patent/contact-patents/tc-2100-management-roster) provides examination for patent applications including Computer Architecture Software and Information Security.
+
+#### **2120 AI & Simulation/Modeling**
+
+| Art Unit | Supervisory Patent Examiner (SPE) | Telephone    |
+|----------|-----------------------------------|--------------|
+| 2120     | Robert Cassity (WQAS)             | 571-270-3150 |
+| 2121     | Li Zhen                           | 571-272-3768 |
+| 2122     | Kakali Chaki                      | 571-272-3719 |
+| 2123     | Alexey Shmatov                    | 571-270-3428 |
+| 2124     | Miranda Huang                     | 571-270-7092 |
+| 2125     | Kamran Afshar                     | 571-272-7796 |
+| 2126     | Ann Lo                            | 571-272-9767 |
+| 2127     | Abdullah Kawsar                   | 571-270-3169 |
+| 2128     | Omar Fernandez-Rivas              | 571-272-2589 |
+| 2129     | Micheal Huntley                   | 303-279-4307 |
+
+#### **2150/2160 Data Bases & File Management**
+
+| Art Unit | Supervisory Patent Examiner (SPE) | Telephone    |
+|----------|-----------------------------------|--------------|
+| 2150/60  | David Brooks (WQAS)               | 571-272-3334 |
+| 2152     | Neveen Abel-Jalil                 | 571-272-4074 |
+| 2153     | Hosain Alam (Acting)              | 571-272-3978 |
+| 2154     | Hosain Alam                       | 571-272-3978 |
+| 2156     | Ajay Bhatia                       | 571-272-3906 |
+| 2159     | Mariela Reyes                     | 571-270-1006 |
+| 2161     | Apu Mofiz                         | 571-272-4080 |
+| 2162     | Pierre Vital                      | 571-272-4215 |
+| 2163     | Tony Mahmoudi                     | 571-272-4078 |
+| 2164     | Amy Ng                            | 571-270-1698 |
+| 2165     | Aleksandr Kerzhner                | 571-270-1760 |
+| 2166     | Mark Featherstone                 | 571-270-3750 |
+| 2167     | Robert Beausoliel                 | 571-272-3645 |
+| 2168     | Fred Ehichioya                    | 571-272-4034 |
+| 2169     | Sherief Badawi                    | 571-272-9782 |
+
+So, I want to discover the connection between 212 and 215.
+
+\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\--
+
+First clean up applications and filter out unit 212 and 215
+
+```{r}
+# convert applications to distinct examiner level 
+examiner = applications %>%
+  select(examiner_art_unit, examiner_id, gender, race, tenure_days) %>%
+  distinct()
+
+# convert examiner_art_unit to str 
+examiner <- examiner %>%
+  mutate(examiner_art_unit_str = as.character(examiner_art_unit))
+
+# filter out unit 212 & 215
+unit_212 <- examiner %>%
+  filter(str_detect(examiner_art_unit_str, "^212"))
+
+unit_215 <- examiner %>%
+  filter(str_detect(examiner_art_unit_str, "^215"))
+```
+
+calculate summary stats
+
+```{r}
+# Add unit column and sort by gender count for unit 212
+gender_summary_212 <- unit_212 %>%
+  group_by(gender) %>%
+  summarise(count = n(), .groups = 'drop') %>%
+  mutate(unit = '212') %>%
+  arrange(desc(count))
+
+# Add unit column and sort by gender count for unit 215
+gender_summary_215 <- unit_215 %>%
+  group_by(gender) %>%
+  summarise(count = n(), .groups = 'drop') %>%
+  mutate(unit = '215') %>%
+  arrange(desc(count))
+
+# Combine the gender summaries into one data frame
+combined_gender_summary <- rbind(gender_summary_212, gender_summary_215)
+
+# Display combined and sorted gender summary
+print("Combined and Sorted Gender Summary")
+print(combined_gender_summary)
+```
+
+```{r}
+race_summary_212 <- unit_212 %>%
+  group_by(race) %>%
+  summarise(count = n(), .groups = 'drop') %>%
+  mutate(unit = '212') %>%
+  arrange(desc(count))
+
+# Add unit column and sort by race count for unit 215
+race_summary_215 <- unit_215 %>%
+  group_by(race) %>%
+  summarise(count = n(), .groups = 'drop') %>%
+  mutate(unit = '215') %>%
+  arrange(desc(count))
+
+# Combine the race summaries into one data frame
+combined_race_summary <- rbind(race_summary_212, race_summary_215)
+
+# Display combined and sorted race summary
+print("Combined and Sorted Race Summary")
+print(combined_race_summary)
+```
+
+prepare data for the plot
+
+```{r}
+summary_212 <- unit_212 %>%
+  group_by(gender, race) %>%
+  summarise(count = n(), .groups = 'drop')
+
+summary_215 <- unit_215 %>%
+  group_by(gender, race) %>%
+  summarise(count = n(), .groups = 'drop')
+
+#combine data
+
+summary_212$unit <- '212'
+summary_215$unit <- '215'
+
+combined_summary <- rbind(summary_212, summary_215)
+```
+
+plot demographic
+
+```{r}
+library(ggplot2)
+
+ggplot(combined_summary, aes(fill = race, x = gender, y = count)) + 
+  geom_bar(position = "dodge", stat = "identity") +
+  facet_wrap(~unit) +
+  labs(title = "Demographics of Examiners by Unit",
+       x = "Gender",
+       y = "Count") +
+  theme_minimal()
+```
+
+### **Gender:**
+
+-   **Unit 212**: Has a higher number of male examiners (259) compared to female (61), with 72 examiners whose gender is not available (NA).
+
+-   **Unit 215**: Also has more male examiners (233) than female (81), with a slightly lower number of NA gender data (68).
+
+### **Race:**
+
+-   **Unit 212**: Predominantly white (222), followed by Asian (116), Hispanic (28), black (24), and other (2).
+
+-   **Unit 215**: Again, predominantly white (194), but with a higher count of Asians (152) than unit 212, followed by black (24), and Hispanic (12).
+
+### **Overall:**
+
+-   **Gender**: Both units show a higher proportion of male examiners, but unit 215 is relatively more balanced in gender distribution than unit 212.
+
+-   **Race**: Both units are predominantly white, but unit 215 has a larger proportion of Asian examiners, while unit 212 has more Hispanic examiners. Both units have the same number of black examiners.
+
+## Create advice networks from \`edges_sample\` and calculate centrality scores for examiners in your selected workgroups
+
+```{r}
+#read data
+edge = read.csv('edges_sample.csv')
+```
+
+```{r}
+library(igraph)
+```
+
+create networks
+
+```{r}
+g <- graph_from_data_frame(d = edge[, c("ego_examiner_id", "alter_examiner_id")], directed = TRUE)
+```
+
+Calculate centralities
+
+```{r}
+degree_centrality <- degree(g, mode = "all")
+betweenness_centrality <- betweenness(g, directed = TRUE)
+closeness_centrality <- closeness(g)
+```
+
+merge score back to original unit212&215 dataset
+
+```{r}
+centrality_scores <- data.frame(
+  examiner_id = V(g)$name,
+  degree = degree_centrality,
+  betweenness = betweenness_centrality,
+  closeness = closeness_centrality
+)
+
+unit_212$examiner_id <- as.character(unit_212$examiner_id)
+unit_215$examiner_id <- as.character(unit_215$examiner_id)
+centrality_scores$examiner_id <- as.character(centrality_scores$examiner_id)
+
+
+unit_212_with_scores <- unit_212 %>%
+  left_join(centrality_scores, by = "examiner_id")
+
+unit_215_with_scores <- unit_215 %>%
+  left_join(centrality_scores, by = "examiner_id")
+```
+
+visualize the centrality score distribution based on gender
+
+```{r}
+unit_212_ids <- unique(unit_212$examiner_id)
+unit_215_ids <- unique(unit_215$examiner_id)
+
+# Combine the centrality scores from both units
+combined_centrality_scores <- rbind(unit_212_with_scores, unit_215_with_scores) %>%
+  mutate(unit = ifelse(examiner_id %in% unit_212_ids, '212', '215'))
+
+# Now create combined histograms based on gender
+
+# Histograms for degree centrality distribution
+ggplot(combined_centrality_scores, aes(x = degree, fill = gender)) +
+  geom_histogram(bins = 30, alpha = 0.7, position = 'identity') +
+  labs(title = 'Combined Degree Centrality Distribution', x = 'Degree Centrality', y = 'Frequency') +
+  facet_grid(. ~ unit) +
+  theme_minimal()
+```
+
+```{r}
+ggplot(combined_centrality_scores, aes(x = betweenness, fill = gender)) +
+  geom_histogram(bins = 30, alpha = 0.7, position = 'identity') +
+  labs(title = 'Combined Betweenness Centrality Distribution', x = 'Betweenness Centrality', y = 'Frequency') +
+  facet_grid(. ~ unit) +
+  theme_minimal()
+```
+
+```{r}
+ggplot(combined_centrality_scores, aes(x = closeness, fill = gender)) +
+  geom_histogram(bins = 30, alpha = 0.7, position = 'identity') +
+  labs(title = 'Combined Closeness Centrality Distribution', x = 'Closeness Centrality', y = 'Frequency') +
+  facet_grid(. ~ unit) +
+  theme_minimal()
+```
+
+### Choice of Centrality Measures
+
+-   **Degree Centrality** - my primary measure because it reflects immediate engagement in the advice process. It's straightforward and indicates how involved individuals are in the network.
+
+-   **Betweenness Centrality** - the secondary measure, valuable for identifying those who have control over the information flow between other members of the network. High betweenness centrality individuals are key to maintaining network cohesion and can be crucial for targeted interventions.
+
+### Characterize and discuss the relationship between centrality and other examiners' characteristics
+
+#### **Degree Centrality:**
+
+The "Combined Degree Centrality Distribution" histogram shows that in both units, male examiners tend to have a higher degree centrality than females and those whose gender is not available (NA). This suggests that male examiners might be more actively involved in giving and receiving advice within these units.
+
+#### **Betweenness Centrality:**
+
+From the "Combined Betweenness Centrality Distribution" histogram, it appears that male examiners also tend to have higher betweenness centrality scores, indicating they often act as bridges in the communication paths of the network. If few individuals are critical for the flow of information, it might indicate that targeting these key players could effectively spread important messages or changes throughout the network.
+
+#### **Demographics:**
+
+The "Demographics of Examiners by Unit" graph indicates that there are more male examiners in both units. This majority may contribute to the skew in centrality measures towards males.
+
+#### **Gender Centrality Relationship:**
+
+Considering the histograms and the demographic data together, it seems there is a relationship between gender and centrality measures in your data, with male examiners generally showing higher centrality. This could reflect a variety of factors, such as:
+
+-   **Network Position**: Male examiners may occupy more central roles within the network due to a larger number of connections or being at strategic points in the network structure.
+
+-   **Activity Levels**: The higher centrality scores for males could be due to higher activity levels---more interactions or involvement in the advice-giving process.
+
+-   **Influence and Hierarchical Positions**: If centrality correlates with seniority or influence, it might indicate that male examiners hold positions that naturally result in higher centrality due to their roles within the organization.

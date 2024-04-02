@@ -1,0 +1,1343 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style type="text/css">
+@font-face {
+font-family: octicons-link;
+src: url(data:font/woff;charset=utf-8;base64,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) format('woff');
+}
+body {
+-webkit-text-size-adjust: 100%;
+text-size-adjust: 100%;
+color: #333;
+font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+font-size: 16px;
+line-height: 1.6;
+word-wrap: break-word;
+}
+a {
+background-color: transparent;
+}
+a:active,
+a:hover {
+outline: 0;
+}
+strong {
+font-weight: bold;
+}
+h1 {
+font-size: 2em;
+margin: 0.67em 0;
+}
+img {
+border: 0;
+}
+hr {
+box-sizing: content-box;
+height: 0;
+}
+pre {
+overflow: auto;
+}
+code,
+kbd,
+pre {
+font-family: monospace, monospace;
+font-size: 1em;
+}
+input {
+color: inherit;
+font: inherit;
+margin: 0;
+}
+html input[disabled] {
+cursor: default;
+}
+input {
+line-height: normal;
+}
+input[type="checkbox"] {
+box-sizing: border-box;
+padding: 0;
+}
+table {
+border-collapse: collapse;
+border-spacing: 0;
+}
+td,
+th {
+padding: 0;
+}
+* {
+box-sizing: border-box;
+}
+input {
+font: 13px / 1.4 Helvetica, arial, nimbussansl, liberationsans, freesans, clean, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+a {
+color: #4078c0;
+text-decoration: none;
+}
+a:hover,
+a:active {
+text-decoration: underline;
+}
+hr {
+height: 0;
+margin: 15px 0;
+overflow: hidden;
+background: transparent;
+border: 0;
+border-bottom: 1px solid #ddd;
+}
+hr:before {
+display: table;
+content: "";
+}
+hr:after {
+display: table;
+clear: both;
+content: "";
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+margin-top: 15px;
+margin-bottom: 15px;
+line-height: 1.1;
+}
+h1 {
+font-size: 30px;
+}
+h2 {
+font-size: 21px;
+}
+h3 {
+font-size: 16px;
+}
+h4 {
+font-size: 14px;
+}
+h5 {
+font-size: 12px;
+}
+h6 {
+font-size: 11px;
+}
+blockquote {
+margin: 0;
+}
+ul,
+ol {
+padding: 0;
+margin-top: 0;
+margin-bottom: 0;
+}
+ol ol,
+ul ol {
+list-style-type: lower-roman;
+}
+ul ul ol,
+ul ol ol,
+ol ul ol,
+ol ol ol {
+list-style-type: lower-alpha;
+}
+dd {
+margin-left: 0;
+}
+code {
+font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+font-size: 12px;
+}
+pre {
+margin-top: 0;
+margin-bottom: 0;
+font: 12px Consolas, "Liberation Mono", Menlo, Courier, monospace;
+}
+.select::-ms-expand {
+opacity: 0;
+}
+.octicon {
+font: normal normal normal 16px/1 octicons-link;
+display: inline-block;
+text-decoration: none;
+text-rendering: auto;
+-webkit-font-smoothing: antialiased;
+-moz-osx-font-smoothing: grayscale;
+-webkit-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+}
+.octicon-link:before {
+content: '\f05c';
+}
+.markdown-body:before {
+display: table;
+content: "";
+}
+.markdown-body:after {
+display: table;
+clear: both;
+content: "";
+}
+.markdown-body>*:first-child {
+margin-top: 0 !important;
+}
+.markdown-body>*:last-child {
+margin-bottom: 0 !important;
+}
+a:not([href]) {
+color: inherit;
+text-decoration: none;
+}
+.anchor {
+display: inline-block;
+padding-right: 2px;
+margin-left: -18px;
+}
+.anchor:focus {
+outline: none;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+margin-top: 1em;
+margin-bottom: 16px;
+font-weight: bold;
+line-height: 1.4;
+}
+h1 .octicon-link,
+h2 .octicon-link,
+h3 .octicon-link,
+h4 .octicon-link,
+h5 .octicon-link,
+h6 .octicon-link {
+color: #000;
+vertical-align: middle;
+visibility: hidden;
+}
+h1:hover .anchor,
+h2:hover .anchor,
+h3:hover .anchor,
+h4:hover .anchor,
+h5:hover .anchor,
+h6:hover .anchor {
+text-decoration: none;
+}
+h1:hover .anchor .octicon-link,
+h2:hover .anchor .octicon-link,
+h3:hover .anchor .octicon-link,
+h4:hover .anchor .octicon-link,
+h5:hover .anchor .octicon-link,
+h6:hover .anchor .octicon-link {
+visibility: visible;
+}
+h1 {
+padding-bottom: 0.3em;
+font-size: 2.25em;
+line-height: 1.2;
+border-bottom: 1px solid #eee;
+}
+h1 .anchor {
+line-height: 1;
+}
+h2 {
+padding-bottom: 0.3em;
+font-size: 1.75em;
+line-height: 1.225;
+border-bottom: 1px solid #eee;
+}
+h2 .anchor {
+line-height: 1;
+}
+h3 {
+font-size: 1.5em;
+line-height: 1.43;
+}
+h3 .anchor {
+line-height: 1.2;
+}
+h4 {
+font-size: 1.25em;
+}
+h4 .anchor {
+line-height: 1.2;
+}
+h5 {
+font-size: 1em;
+}
+h5 .anchor {
+line-height: 1.1;
+}
+h6 {
+font-size: 1em;
+color: #777;
+}
+h6 .anchor {
+line-height: 1.1;
+}
+p,
+blockquote,
+ul,
+ol,
+dl,
+table,
+pre {
+margin-top: 0;
+margin-bottom: 16px;
+}
+hr {
+height: 4px;
+padding: 0;
+margin: 16px 0;
+background-color: #e7e7e7;
+border: 0 none;
+}
+ul,
+ol {
+padding-left: 2em;
+}
+ul ul,
+ul ol,
+ol ol,
+ol ul {
+margin-top: 0;
+margin-bottom: 0;
+}
+li>p {
+margin-top: 16px;
+}
+dl {
+padding: 0;
+}
+dl dt {
+padding: 0;
+margin-top: 16px;
+font-size: 1em;
+font-style: italic;
+font-weight: bold;
+}
+dl dd {
+padding: 0 16px;
+margin-bottom: 16px;
+}
+blockquote {
+padding: 0 15px;
+color: #777;
+border-left: 4px solid #ddd;
+}
+blockquote>:first-child {
+margin-top: 0;
+}
+blockquote>:last-child {
+margin-bottom: 0;
+}
+table {
+display: block;
+width: 100%;
+overflow: auto;
+word-break: normal;
+word-break: keep-all;
+}
+table th {
+font-weight: bold;
+}
+table th,
+table td {
+padding: 6px 13px;
+border: 1px solid #ddd;
+}
+table tr {
+background-color: #fff;
+border-top: 1px solid #ccc;
+}
+table tr:nth-child(2n) {
+background-color: #f8f8f8;
+}
+img {
+max-width: 100%;
+box-sizing: content-box;
+background-color: #fff;
+}
+code {
+padding: 0;
+padding-top: 0.2em;
+padding-bottom: 0.2em;
+margin: 0;
+font-size: 85%;
+background-color: rgba(0,0,0,0.04);
+border-radius: 3px;
+}
+code:before,
+code:after {
+letter-spacing: -0.2em;
+content: "\00a0";
+}
+pre>code {
+padding: 0;
+margin: 0;
+font-size: 100%;
+word-break: normal;
+white-space: pre;
+background: transparent;
+border: 0;
+}
+.highlight {
+margin-bottom: 16px;
+}
+.highlight pre,
+pre {
+padding: 16px;
+overflow: auto;
+font-size: 85%;
+line-height: 1.45;
+background-color: #f7f7f7;
+border-radius: 3px;
+}
+.highlight pre {
+margin-bottom: 0;
+word-break: normal;
+}
+pre {
+word-wrap: normal;
+}
+pre code {
+display: inline;
+max-width: initial;
+padding: 0;
+margin: 0;
+overflow: initial;
+line-height: inherit;
+word-wrap: normal;
+background-color: transparent;
+border: 0;
+}
+pre code:before,
+pre code:after {
+content: normal;
+}
+kbd {
+display: inline-block;
+padding: 3px 5px;
+font-size: 11px;
+line-height: 10px;
+color: #555;
+vertical-align: middle;
+background-color: #fcfcfc;
+border: solid 1px #ccc;
+border-bottom-color: #bbb;
+border-radius: 3px;
+box-shadow: inset 0 -1px 0 #bbb;
+}
+.pl-c {
+color: #969896;
+}
+.pl-c1,
+.pl-s .pl-v {
+color: #0086b3;
+}
+.pl-e,
+.pl-en {
+color: #795da3;
+}
+.pl-s .pl-s1,
+.pl-smi {
+color: #333;
+}
+.pl-ent {
+color: #63a35c;
+}
+.pl-k {
+color: #a71d5d;
+}
+.pl-pds,
+.pl-s,
+.pl-s .pl-pse .pl-s1,
+.pl-sr,
+.pl-sr .pl-cce,
+.pl-sr .pl-sra,
+.pl-sr .pl-sre {
+color: #183691;
+}
+.pl-v {
+color: #ed6a43;
+}
+.pl-id {
+color: #b52a1d;
+}
+.pl-ii {
+background-color: #b52a1d;
+color: #f8f8f8;
+}
+.pl-sr .pl-cce {
+color: #63a35c;
+font-weight: bold;
+}
+.pl-ml {
+color: #693a17;
+}
+.pl-mh,
+.pl-mh .pl-en,
+.pl-ms {
+color: #1d3e81;
+font-weight: bold;
+}
+.pl-mq {
+color: #008080;
+}
+.pl-mi {
+color: #333;
+font-style: italic;
+}
+.pl-mb {
+color: #333;
+font-weight: bold;
+}
+.pl-md {
+background-color: #ffecec;
+color: #bd2c00;
+}
+.pl-mi1 {
+background-color: #eaffea;
+color: #55a532;
+}
+.pl-mdr {
+color: #795da3;
+font-weight: bold;
+}
+.pl-mo {
+color: #1d3e81;
+}
+kbd {
+display: inline-block;
+padding: 3px 5px;
+font: 11px Consolas, "Liberation Mono", Menlo, Courier, monospace;
+line-height: 10px;
+color: #555;
+vertical-align: middle;
+background-color: #fcfcfc;
+border: solid 1px #ccc;
+border-bottom-color: #bbb;
+border-radius: 3px;
+box-shadow: inset 0 -1px 0 #bbb;
+}
+.task-list-item {
+list-style-type: none;
+}
+.task-list-item+.task-list-item {
+margin-top: 3px;
+}
+.task-list-item input {
+margin: 0 0.35em 0.25em -1.6em;
+vertical-align: middle;
+}
+:checked+.radio-label {
+z-index: 1;
+position: relative;
+border-color: #4078c0;
+}
+.sourceLine {
+display: inline-block;
+}
+code .kw { color: #000000; }
+code .dt { color: #ed6a43; }
+code .dv { color: #009999; }
+code .bn { color: #009999; }
+code .fl { color: #009999; }
+code .ch { color: #009999; }
+code .st { color: #183691; }
+code .co { color: #969896; }
+code .ot { color: #0086b3; }
+code .al { color: #a61717; }
+code .fu { color: #63a35c; }
+code .er { color: #a61717; background-color: #e3d2d2; }
+code .wa { color: #000000; }
+code .cn { color: #008080; }
+code .sc { color: #008080; }
+code .vs { color: #183691; }
+code .ss { color: #183691; }
+code .im { color: #000000; }
+code .va {color: #008080; }
+code .cf { color: #000000; }
+code .op { color: #000000; }
+code .bu { color: #000000; }
+code .ex { color: #000000; }
+code .pp { color: #999999; }
+code .at { color: #008080; }
+code .do { color: #969896; }
+code .an { color: #008080; }
+code .cv { color: #008080; }
+code .in { color: #008080; }
+</style>
+<style>
+body {
+box-sizing: border-box;
+min-width: 200px;
+max-width: 980px;
+margin: 0 auto;
+padding: 45px;
+padding-top: 0px;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<h1 id="exercise-3-starter">Exercise 3 starter</h1>
+<h2 id="load-data">Load data</h2>
+<p>Load the following data: + applications from
+<code>app_data_sample.parquet</code> + edges from
+<code>edges_sample.csv</code></p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="co"># change to your own path!</span></span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>data_path <span class="ot">=</span> <span class="st">&quot;C:/Users/csg20/OneDrive/Desktop/Git/MMA/2024 Winter/ORGB-672/Ex3/&quot;</span></span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>app_data_sample <span class="ot">&lt;-</span> <span class="fu">read_parquet</span>(<span class="fu">paste0</span>(data_path,<span class="st">&quot;app_data_sample.parquet&quot;</span>))</span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>app_data_sample</span></code></pre></div>
+<pre><code>## # A tibble: 2,018,477 × 16
+##    application_number filing_date examiner_name_last examiner_name_first
+##    &lt;chr&gt;              &lt;date&gt;      &lt;chr&gt;              &lt;chr&gt;              
+##  1 08284457           2000-01-26  HOWARD             JACQUELINE         
+##  2 08413193           2000-10-11  YILDIRIM           BEKIR              
+##  3 08531853           2000-05-17  HAMILTON           CYNTHIA            
+##  4 08637752           2001-07-20  MOSHER             MARY               
+##  5 08682726           2000-04-10  BARR               MICHAEL            
+##  6 08687412           2000-04-28  GRAY               LINDA              
+##  7 08716371           2004-01-26  MCMILLIAN          KARA               
+##  8 08765941           2000-06-23  FORD               VANESSA            
+##  9 08776818           2000-02-04  STRZELECKA         TERESA             
+## 10 08809677           2002-02-20  KIM                SUN                
+## # ℹ 2,018,467 more rows
+## # ℹ 12 more variables: examiner_name_middle &lt;chr&gt;, examiner_id &lt;dbl&gt;,
+## #   examiner_art_unit &lt;dbl&gt;, uspc_class &lt;chr&gt;, uspc_subclass &lt;chr&gt;,
+## #   patent_number &lt;chr&gt;, patent_issue_date &lt;date&gt;, abandon_date &lt;date&gt;,
+## #   disposal_type &lt;chr&gt;, appl_status_code &lt;dbl&gt;, appl_status_date &lt;chr&gt;,
+## #   tc &lt;dbl&gt;</code></pre>
+<h2 id="get-gender-for-examiners">Get gender for examiners</h2>
+<p>We’ll get gender based on the first name of the examiner, which is
+recorded in the field <code>examiner_name_first</code>. We’ll use
+library <code>gender</code> for that, relying on a modified version of
+their own <a href="https://cran.r-project.org/web/packages/gender/vignettes/predicting-gender.html">example</a>.</p>
+<p>Note that there are over 2 million records in the applications table
+– that’s because there are many records for each examiner, as many as
+the number of applications that examiner worked on during this time
+frame. Our first step therefore is to get all <em>unique</em> names in a
+separate list <code>examiner_names</code>. We will then guess gender for
+each one and will join this table back to the original dataset. So,
+let’s get names without repetition:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">library</span>(gender)</span></code></pre></div>
+<pre><code>## Warning: package &#39;gender&#39; was built under R version 4.2.3</code></pre>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="co">#install_genderdata_package() # only run this line the first time you use the package, to get data for it</span></span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a><span class="co"># get a list of first names without repetitions</span></span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>examiner_names <span class="ot">&lt;-</span> app_data_sample <span class="sc">%&gt;%</span> </span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>  <span class="fu">distinct</span>(examiner_name_first)</span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a>examiner_names</span></code></pre></div>
+<pre><code>## # A tibble: 2,595 × 1
+##    examiner_name_first
+##    &lt;chr&gt;              
+##  1 JACQUELINE         
+##  2 BEKIR              
+##  3 CYNTHIA            
+##  4 MARY               
+##  5 MICHAEL            
+##  6 LINDA              
+##  7 KARA               
+##  8 VANESSA            
+##  9 TERESA             
+## 10 SUN                
+## # ℹ 2,585 more rows</code></pre>
+<p>Now let’s use function <code>gender()</code> as shown in the example
+for the package to attach a gender and probability to each name and put
+the results into the table <code>examiner_names_gender</code>. Note that
+the first time you run this code, you need to say “Yes” in the console
+to download the gender data.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="co"># get a table of names and gender</span></span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>examiner_names_gender <span class="ot">&lt;-</span> examiner_names <span class="sc">%&gt;%</span> </span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>  <span class="fu">do</span>(<span class="at">results =</span> <span class="fu">gender</span>(.<span class="sc">$</span>examiner_name_first, <span class="at">method =</span> <span class="st">&quot;ssa&quot;</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>  <span class="fu">unnest</span>(<span class="at">cols =</span> <span class="fu">c</span>(results), <span class="at">keep_empty =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a>  <span class="fu">select</span>(</span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a>    <span class="at">examiner_name_first =</span> name,</span>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a>    gender,</span>
+<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a>    proportion_female</span>
+<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a>  )</span>
+<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a></span>
+<span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a>examiner_names_gender</span></code></pre></div>
+<pre><code>## # A tibble: 1,822 × 3
+##    examiner_name_first gender proportion_female
+##    &lt;chr&gt;               &lt;chr&gt;              &lt;dbl&gt;
+##  1 AARON               male              0.0082
+##  2 ABDEL               male              0     
+##  3 ABDOU               male              0     
+##  4 ABDUL               male              0     
+##  5 ABDULHAKIM          male              0     
+##  6 ABDULLAH            male              0     
+##  7 ABDULLAHI           male              0     
+##  8 ABIGAIL             female            0.998 
+##  9 ABIMBOLA            female            0.944 
+## 10 ABRAHAM             male              0.0031
+## # ℹ 1,812 more rows</code></pre>
+<p>Finally, let’s join that table back to our original applications data
+and discard the temporary tables we have just created to reduce clutter
+in our environment.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="co"># remove extra colums from the gender table</span></span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>examiner_names_gender <span class="ot">&lt;-</span> examiner_names_gender <span class="sc">%&gt;%</span> </span>
+<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a>  <span class="fu">select</span>(examiner_name_first, gender)</span>
+<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a><span class="co"># joining gender back to the dataset</span></span>
+<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a>applications <span class="ot">&lt;-</span> app_data_sample <span class="sc">%&gt;%</span> </span>
+<span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a>  <span class="fu">left_join</span>(examiner_names_gender, <span class="at">by =</span> <span class="st">&quot;examiner_name_first&quot;</span>)</span>
+<span id="cb9-8"><a href="#cb9-8" tabindex="-1"></a></span>
+<span id="cb9-9"><a href="#cb9-9" tabindex="-1"></a><span class="co"># cleaning up</span></span>
+<span id="cb9-10"><a href="#cb9-10" tabindex="-1"></a><span class="fu">rm</span>(examiner_names)</span>
+<span id="cb9-11"><a href="#cb9-11" tabindex="-1"></a><span class="fu">rm</span>(examiner_names_gender)</span>
+<span id="cb9-12"><a href="#cb9-12" tabindex="-1"></a><span class="fu">gc</span>()</span></code></pre></div>
+<pre><code>##            used  (Mb) gc trigger  (Mb) max used  (Mb)
+## Ncells  4479280 239.3    8266318 441.5  4905067 262.0
+## Vcells 77674996 592.7  114452759 873.3 79732227 608.4</code></pre>
+<h2 id="guess-the-examiners-race">Guess the examiner’s race</h2>
+<p>We’ll now use package <code>wru</code> to estimate likely race of an
+examiner. Just like with gender, we’ll get a list of unique names first,
+only now we are using surnames.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="fu">library</span>(wru)</span></code></pre></div>
+<pre><code>## Warning: package &#39;wru&#39; was built under R version 4.2.3
+
+## 
+## Please cite as:
+## 
+## Khanna K, Bertelsen B, Olivella S, Rosenman E, Rossell Hayes A, Imai K
+## (2024). _wru: Who are You? Bayesian Prediction of Racial Category Using
+## Surname, First Name, Middle Name, and Geolocation_. R package version
+## 3.0.1, &lt;https://CRAN.R-project.org/package=wru&gt;.
+## 
+## Note that wru 2.0.0 uses 2020 census data by default.
+## Use the argument `year = &quot;2010&quot;`, to replicate analyses produced with earlier package versions.</code></pre>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a>examiner_surnames <span class="ot">&lt;-</span> applications <span class="sc">%&gt;%</span> </span>
+<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a>  <span class="fu">select</span>(<span class="at">surname =</span> examiner_name_last) <span class="sc">%&gt;%</span> </span>
+<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a>  <span class="fu">distinct</span>()</span>
+<span id="cb13-4"><a href="#cb13-4" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" tabindex="-1"></a>examiner_surnames</span></code></pre></div>
+<pre><code>## # A tibble: 3,806 × 1
+##    surname   
+##    &lt;chr&gt;     
+##  1 HOWARD    
+##  2 YILDIRIM  
+##  3 HAMILTON  
+##  4 MOSHER    
+##  5 BARR      
+##  6 GRAY      
+##  7 MCMILLIAN 
+##  8 FORD      
+##  9 STRZELECKA
+## 10 KIM       
+## # ℹ 3,796 more rows</code></pre>
+<p>We’ll follow the instructions for the package outlined here <a href="https://github.com/kosukeimai/wru">https://github.com/kosukeimai/wru</a>.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a>examiner_race <span class="ot">&lt;-</span> <span class="fu">predict_race</span>(<span class="at">voter.file =</span> examiner_surnames, <span class="at">surname.only =</span> T) <span class="sc">%&gt;%</span> </span>
+<span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a>  <span class="fu">as_tibble</span>()</span></code></pre></div>
+<pre><code>## Predicting race for 2020
+
+## Warning: Unknown or uninitialised column: `state`.
+
+## Proceeding with last name predictions...
+
+## ℹ All local files already up-to-date!
+
+## 701 (18.4%) individuals&#39; last names were not matched.</code></pre>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a>examiner_race</span></code></pre></div>
+<pre><code>## # A tibble: 3,806 × 6
+##    surname    pred.whi pred.bla pred.his pred.asi pred.oth
+##    &lt;chr&gt;         &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+##  1 HOWARD       0.597   0.295    0.0275   0.00690   0.0741
+##  2 YILDIRIM     0.807   0.0273   0.0694   0.0165    0.0798
+##  3 HAMILTON     0.656   0.239    0.0286   0.00750   0.0692
+##  4 MOSHER       0.915   0.00425  0.0291   0.00917   0.0427
+##  5 BARR         0.784   0.120    0.0268   0.00830   0.0615
+##  6 GRAY         0.640   0.252    0.0281   0.00748   0.0724
+##  7 MCMILLIAN    0.322   0.554    0.0212   0.00340   0.0995
+##  8 FORD         0.576   0.320    0.0275   0.00621   0.0697
+##  9 STRZELECKA   0.472   0.171    0.220    0.0825    0.0543
+## 10 KIM          0.0169  0.00282  0.00546  0.943     0.0319
+## # ℹ 3,796 more rows</code></pre>
+<p>As you can see, we get probabilities across five broad US Census
+categories: white, black, Hispanic, Asian and other. (Some of you may
+correctly point out that Hispanic is not a race category in the US
+Census, but these are the limitations of this package.)</p>
+<p>Our final step here is to pick the race category that has the highest
+probability for each last name and then join the table back to the main
+applications table. See this example for comparing values across
+columns: <a href="https://www.tidyverse.org/blog/2020/04/dplyr-1-0-0-rowwise/">https://www.tidyverse.org/blog/2020/04/dplyr-1-0-0-rowwise/</a>.
+And this one for <code>case_when()</code> function: <a href="https://dplyr.tidyverse.org/reference/case_when.html">https://dplyr.tidyverse.org/reference/case_when.html</a>.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a>examiner_race <span class="ot">&lt;-</span> examiner_race <span class="sc">%&gt;%</span> </span>
+<span id="cb19-2"><a href="#cb19-2" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">max_race_p =</span> <span class="fu">pmax</span>(pred.asi, pred.bla, pred.his, pred.oth, pred.whi)) <span class="sc">%&gt;%</span> </span>
+<span id="cb19-3"><a href="#cb19-3" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">race =</span> <span class="fu">case_when</span>(</span>
+<span id="cb19-4"><a href="#cb19-4" tabindex="-1"></a>    max_race_p <span class="sc">==</span> pred.asi <span class="sc">~</span> <span class="st">&quot;Asian&quot;</span>,</span>
+<span id="cb19-5"><a href="#cb19-5" tabindex="-1"></a>    max_race_p <span class="sc">==</span> pred.bla <span class="sc">~</span> <span class="st">&quot;black&quot;</span>,</span>
+<span id="cb19-6"><a href="#cb19-6" tabindex="-1"></a>    max_race_p <span class="sc">==</span> pred.his <span class="sc">~</span> <span class="st">&quot;Hispanic&quot;</span>,</span>
+<span id="cb19-7"><a href="#cb19-7" tabindex="-1"></a>    max_race_p <span class="sc">==</span> pred.oth <span class="sc">~</span> <span class="st">&quot;other&quot;</span>,</span>
+<span id="cb19-8"><a href="#cb19-8" tabindex="-1"></a>    max_race_p <span class="sc">==</span> pred.whi <span class="sc">~</span> <span class="st">&quot;white&quot;</span>,</span>
+<span id="cb19-9"><a href="#cb19-9" tabindex="-1"></a>    <span class="cn">TRUE</span> <span class="sc">~</span> <span class="cn">NA_character_</span></span>
+<span id="cb19-10"><a href="#cb19-10" tabindex="-1"></a>  ))</span>
+<span id="cb19-11"><a href="#cb19-11" tabindex="-1"></a></span>
+<span id="cb19-12"><a href="#cb19-12" tabindex="-1"></a>examiner_race</span></code></pre></div>
+<pre><code>## # A tibble: 3,806 × 8
+##    surname    pred.whi pred.bla pred.his pred.asi pred.oth max_race_p race 
+##    &lt;chr&gt;         &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt; &lt;chr&gt;
+##  1 HOWARD       0.597   0.295    0.0275   0.00690   0.0741      0.597 white
+##  2 YILDIRIM     0.807   0.0273   0.0694   0.0165    0.0798      0.807 white
+##  3 HAMILTON     0.656   0.239    0.0286   0.00750   0.0692      0.656 white
+##  4 MOSHER       0.915   0.00425  0.0291   0.00917   0.0427      0.915 white
+##  5 BARR         0.784   0.120    0.0268   0.00830   0.0615      0.784 white
+##  6 GRAY         0.640   0.252    0.0281   0.00748   0.0724      0.640 white
+##  7 MCMILLIAN    0.322   0.554    0.0212   0.00340   0.0995      0.554 black
+##  8 FORD         0.576   0.320    0.0275   0.00621   0.0697      0.576 white
+##  9 STRZELECKA   0.472   0.171    0.220    0.0825    0.0543      0.472 white
+## 10 KIM          0.0169  0.00282  0.00546  0.943     0.0319      0.943 Asian
+## # ℹ 3,796 more rows</code></pre>
+<p>Let’s join the data back to the applications table.</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" tabindex="-1"></a><span class="co"># removing extra columns</span></span>
+<span id="cb21-2"><a href="#cb21-2" tabindex="-1"></a>examiner_race <span class="ot">&lt;-</span> examiner_race <span class="sc">%&gt;%</span> </span>
+<span id="cb21-3"><a href="#cb21-3" tabindex="-1"></a>  <span class="fu">select</span>(surname,race)</span>
+<span id="cb21-4"><a href="#cb21-4" tabindex="-1"></a></span>
+<span id="cb21-5"><a href="#cb21-5" tabindex="-1"></a>applications <span class="ot">&lt;-</span> applications <span class="sc">%&gt;%</span> </span>
+<span id="cb21-6"><a href="#cb21-6" tabindex="-1"></a>  <span class="fu">left_join</span>(examiner_race, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">&quot;examiner_name_last&quot;</span> <span class="ot">=</span> <span class="st">&quot;surname&quot;</span>))</span>
+<span id="cb21-7"><a href="#cb21-7" tabindex="-1"></a></span>
+<span id="cb21-8"><a href="#cb21-8" tabindex="-1"></a><span class="fu">rm</span>(examiner_race)</span>
+<span id="cb21-9"><a href="#cb21-9" tabindex="-1"></a><span class="fu">rm</span>(examiner_surnames)</span>
+<span id="cb21-10"><a href="#cb21-10" tabindex="-1"></a><span class="fu">gc</span>()</span></code></pre></div>
+<pre><code>##            used  (Mb) gc trigger   (Mb)  max used  (Mb)
+## Ncells  4679316 250.0    8266318  441.5   7471124 399.1
+## Vcells 80015462 610.5  139304153 1062.9 116392263 888.1</code></pre>
+<h2 id="examiners-tenure">Examiner’s tenure</h2>
+<p>To figure out the timespan for which we observe each examiner in the
+applications data, let’s find the first and the last observed date for
+each examiner. We’ll first get examiner IDs and application dates in a
+separate table, for ease of manipulation. We’ll keep examiner ID (the
+field <code>examiner_id</code>), and earliest and latest dates for each
+application (<code>filing_date</code> and <code>appl_status_date</code>
+respectively). We’ll use functions in package <code>lubridate</code> to
+work with date and time values.</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" tabindex="-1"></a><span class="fu">library</span>(lubridate) <span class="co"># to work with dates</span></span>
+<span id="cb23-2"><a href="#cb23-2" tabindex="-1"></a></span>
+<span id="cb23-3"><a href="#cb23-3" tabindex="-1"></a>examiner_dates <span class="ot">&lt;-</span> applications <span class="sc">%&gt;%</span> </span>
+<span id="cb23-4"><a href="#cb23-4" tabindex="-1"></a>  <span class="fu">select</span>(examiner_id, filing_date, appl_status_date) </span>
+<span id="cb23-5"><a href="#cb23-5" tabindex="-1"></a></span>
+<span id="cb23-6"><a href="#cb23-6" tabindex="-1"></a>examiner_dates</span></code></pre></div>
+<pre><code>## # A tibble: 2,018,477 × 3
+##    examiner_id filing_date appl_status_date  
+##          &lt;dbl&gt; &lt;date&gt;      &lt;chr&gt;             
+##  1       96082 2000-01-26  30jan2003 00:00:00
+##  2       87678 2000-10-11  27sep2010 00:00:00
+##  3       63213 2000-05-17  30mar2009 00:00:00
+##  4       73788 2001-07-20  07sep2009 00:00:00
+##  5       77294 2000-04-10  19apr2001 00:00:00
+##  6       68606 2000-04-28  16jul2001 00:00:00
+##  7       89557 2004-01-26  15may2017 00:00:00
+##  8       97543 2000-06-23  03apr2002 00:00:00
+##  9       98714 2000-02-04  27nov2002 00:00:00
+## 10       65530 2002-02-20  23mar2009 00:00:00
+## # ℹ 2,018,467 more rows</code></pre>
+<p>The dates look inconsistent in terms of formatting. Let’s make them
+consistent. We’ll create new variables <code>start_date</code> and
+<code>end_date</code>.</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" tabindex="-1"></a>examiner_dates <span class="ot">&lt;-</span> examiner_dates <span class="sc">%&gt;%</span> </span>
+<span id="cb25-2"><a href="#cb25-2" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">start_date =</span> <span class="fu">ymd</span>(filing_date), <span class="at">end_date =</span> <span class="fu">as_date</span>(<span class="fu">dmy_hms</span>(appl_status_date)))</span></code></pre></div>
+<p>Let’s now identify the earliest and the latest date for each examiner
+and calculate the difference in days, which is their tenure in the
+organization.</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" tabindex="-1"></a>examiner_dates <span class="ot">&lt;-</span> examiner_dates <span class="sc">%&gt;%</span> </span>
+<span id="cb26-2"><a href="#cb26-2" tabindex="-1"></a>  <span class="fu">group_by</span>(examiner_id) <span class="sc">%&gt;%</span> </span>
+<span id="cb26-3"><a href="#cb26-3" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb26-4"><a href="#cb26-4" tabindex="-1"></a>    <span class="at">earliest_date =</span> <span class="fu">min</span>(start_date, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), </span>
+<span id="cb26-5"><a href="#cb26-5" tabindex="-1"></a>    <span class="at">latest_date =</span> <span class="fu">max</span>(end_date, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb26-6"><a href="#cb26-6" tabindex="-1"></a>    <span class="at">tenure_days =</span> <span class="fu">interval</span>(earliest_date, latest_date) <span class="sc">%/%</span> <span class="fu">days</span>(<span class="dv">1</span>)</span>
+<span id="cb26-7"><a href="#cb26-7" tabindex="-1"></a>    ) <span class="sc">%&gt;%</span> </span>
+<span id="cb26-8"><a href="#cb26-8" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">year</span>(latest_date)<span class="sc">&lt;</span><span class="dv">2018</span>)</span>
+<span id="cb26-9"><a href="#cb26-9" tabindex="-1"></a></span>
+<span id="cb26-10"><a href="#cb26-10" tabindex="-1"></a>examiner_dates</span></code></pre></div>
+<pre><code>## # A tibble: 5,625 × 4
+##    examiner_id earliest_date latest_date tenure_days
+##          &lt;dbl&gt; &lt;date&gt;        &lt;date&gt;            &lt;dbl&gt;
+##  1       59012 2004-07-28    2015-07-24         4013
+##  2       59025 2009-10-26    2017-05-18         2761
+##  3       59030 2005-12-12    2017-05-22         4179
+##  4       59040 2007-09-11    2017-05-23         3542
+##  5       59052 2001-08-21    2007-02-28         2017
+##  6       59054 2000-11-10    2016-12-23         5887
+##  7       59055 2004-11-02    2007-12-26         1149
+##  8       59056 2000-03-24    2017-05-22         6268
+##  9       59074 2000-01-31    2017-03-17         6255
+## 10       59081 2011-04-21    2017-05-19         2220
+## # ℹ 5,615 more rows</code></pre>
+<p>Joining back to the applications data.</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" tabindex="-1"></a>applications <span class="ot">&lt;-</span> applications <span class="sc">%&gt;%</span> </span>
+<span id="cb28-2"><a href="#cb28-2" tabindex="-1"></a>  <span class="fu">left_join</span>(examiner_dates, <span class="at">by =</span> <span class="st">&quot;examiner_id&quot;</span>)</span>
+<span id="cb28-3"><a href="#cb28-3" tabindex="-1"></a></span>
+<span id="cb28-4"><a href="#cb28-4" tabindex="-1"></a><span class="fu">rm</span>(examiner_dates)</span>
+<span id="cb28-5"><a href="#cb28-5" tabindex="-1"></a><span class="fu">gc</span>()</span></code></pre></div>
+<pre><code>##            used  (Mb) gc trigger   (Mb)  max used   (Mb)
+## Ncells  4685775 250.3   15250682  814.5  15250682  814.5
+## Vcells 92377137 704.8  167244983 1276.0 167183063 1275.6</code></pre>
+<h2 id="pick-two-workgroups-you-want-to-focus-on-remember-that-a-workgroup-is-represented-by-the-first-3-digits-of-examiner_art_unit-value">Pick
+two workgroups you want to focus on (remember that a workgroup is
+represented by the first 3 digits of `examiner_art_unit` value)</h2>
+<p>By research online, I found <a href="https://www.uspto.gov/patent/contact-patents/tc-2100-management-roster"><strong>Technology
+Center 2100</strong></a> provides examination for patent applications
+including Computer Architecture Software and Information Security.</p>
+<h4 id="id_2120-ai--simulationmodeling"><strong>2120 AI &amp;
+Simulation/Modeling</strong></h4>
+<table>
+<thead>
+<tr class="header">
+<th>Art Unit</th>
+<th>Supervisory Patent Examiner (SPE)</th>
+<th>Telephone</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>2120</td>
+<td>Robert Cassity (WQAS)</td>
+<td>571-270-3150</td>
+</tr>
+<tr class="even">
+<td>2121</td>
+<td>Li Zhen</td>
+<td>571-272-3768</td>
+</tr>
+<tr class="odd">
+<td>2122</td>
+<td>Kakali Chaki</td>
+<td>571-272-3719</td>
+</tr>
+<tr class="even">
+<td>2123</td>
+<td>Alexey Shmatov</td>
+<td>571-270-3428</td>
+</tr>
+<tr class="odd">
+<td>2124</td>
+<td>Miranda Huang</td>
+<td>571-270-7092</td>
+</tr>
+<tr class="even">
+<td>2125</td>
+<td>Kamran Afshar</td>
+<td>571-272-7796</td>
+</tr>
+<tr class="odd">
+<td>2126</td>
+<td>Ann Lo</td>
+<td>571-272-9767</td>
+</tr>
+<tr class="even">
+<td>2127</td>
+<td>Abdullah Kawsar</td>
+<td>571-270-3169</td>
+</tr>
+<tr class="odd">
+<td>2128</td>
+<td>Omar Fernandez-Rivas</td>
+<td>571-272-2589</td>
+</tr>
+<tr class="even">
+<td>2129</td>
+<td>Micheal Huntley</td>
+<td>303-279-4307</td>
+</tr>
+</tbody>
+</table>
+<h4 id="id_21502160-data-bases--file-management"><strong>2150/2160 Data
+Bases &amp; File Management</strong></h4>
+<table>
+<thead>
+<tr class="header">
+<th>Art Unit</th>
+<th>Supervisory Patent Examiner (SPE)</th>
+<th>Telephone</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>2150/60</td>
+<td>David Brooks (WQAS)</td>
+<td>571-272-3334</td>
+</tr>
+<tr class="even">
+<td>2152</td>
+<td>Neveen Abel-Jalil</td>
+<td>571-272-4074</td>
+</tr>
+<tr class="odd">
+<td>2153</td>
+<td>Hosain Alam (Acting)</td>
+<td>571-272-3978</td>
+</tr>
+<tr class="even">
+<td>2154</td>
+<td>Hosain Alam</td>
+<td>571-272-3978</td>
+</tr>
+<tr class="odd">
+<td>2156</td>
+<td>Ajay Bhatia</td>
+<td>571-272-3906</td>
+</tr>
+<tr class="even">
+<td>2159</td>
+<td>Mariela Reyes</td>
+<td>571-270-1006</td>
+</tr>
+<tr class="odd">
+<td>2161</td>
+<td>Apu Mofiz</td>
+<td>571-272-4080</td>
+</tr>
+<tr class="even">
+<td>2162</td>
+<td>Pierre Vital</td>
+<td>571-272-4215</td>
+</tr>
+<tr class="odd">
+<td>2163</td>
+<td>Tony Mahmoudi</td>
+<td>571-272-4078</td>
+</tr>
+<tr class="even">
+<td>2164</td>
+<td>Amy Ng</td>
+<td>571-270-1698</td>
+</tr>
+<tr class="odd">
+<td>2165</td>
+<td>Aleksandr Kerzhner</td>
+<td>571-270-1760</td>
+</tr>
+<tr class="even">
+<td>2166</td>
+<td>Mark Featherstone</td>
+<td>571-270-3750</td>
+</tr>
+<tr class="odd">
+<td>2167</td>
+<td>Robert Beausoliel</td>
+<td>571-272-3645</td>
+</tr>
+<tr class="even">
+<td>2168</td>
+<td>Fred Ehichioya</td>
+<td>571-272-4034</td>
+</tr>
+<tr class="odd">
+<td>2169</td>
+<td>Sherief Badawi</td>
+<td>571-272-9782</td>
+</tr>
+</tbody>
+</table>
+<p>So, I want to discover the connection between 212 and 215.</p>
+<hr />
+<p>First clean up applications and filter out unit 212 and 215</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" tabindex="-1"></a><span class="co"># convert applications to distinct examiner level </span></span>
+<span id="cb30-2"><a href="#cb30-2" tabindex="-1"></a>examiner <span class="ot">=</span> applications <span class="sc">%&gt;%</span></span>
+<span id="cb30-3"><a href="#cb30-3" tabindex="-1"></a>  <span class="fu">select</span>(examiner_art_unit, examiner_id, gender, race, tenure_days) <span class="sc">%&gt;%</span></span>
+<span id="cb30-4"><a href="#cb30-4" tabindex="-1"></a>  <span class="fu">distinct</span>()</span>
+<span id="cb30-5"><a href="#cb30-5" tabindex="-1"></a></span>
+<span id="cb30-6"><a href="#cb30-6" tabindex="-1"></a><span class="co"># convert examiner_art_unit to str </span></span>
+<span id="cb30-7"><a href="#cb30-7" tabindex="-1"></a>examiner <span class="ot">&lt;-</span> examiner <span class="sc">%&gt;%</span></span>
+<span id="cb30-8"><a href="#cb30-8" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">examiner_art_unit_str =</span> <span class="fu">as.character</span>(examiner_art_unit))</span>
+<span id="cb30-9"><a href="#cb30-9" tabindex="-1"></a></span>
+<span id="cb30-10"><a href="#cb30-10" tabindex="-1"></a><span class="co"># filter out unit 212 &amp; 215</span></span>
+<span id="cb30-11"><a href="#cb30-11" tabindex="-1"></a>unit_212 <span class="ot">&lt;-</span> examiner <span class="sc">%&gt;%</span></span>
+<span id="cb30-12"><a href="#cb30-12" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">str_detect</span>(examiner_art_unit_str, <span class="st">&quot;^212&quot;</span>))</span>
+<span id="cb30-13"><a href="#cb30-13" tabindex="-1"></a></span>
+<span id="cb30-14"><a href="#cb30-14" tabindex="-1"></a>unit_215 <span class="ot">&lt;-</span> examiner <span class="sc">%&gt;%</span></span>
+<span id="cb30-15"><a href="#cb30-15" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">str_detect</span>(examiner_art_unit_str, <span class="st">&quot;^215&quot;</span>))</span></code></pre></div>
+<p>calculate summary stats</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" tabindex="-1"></a><span class="co"># Add unit column and sort by gender count for unit 212</span></span>
+<span id="cb31-2"><a href="#cb31-2" tabindex="-1"></a>gender_summary_212 <span class="ot">&lt;-</span> unit_212 <span class="sc">%&gt;%</span></span>
+<span id="cb31-3"><a href="#cb31-3" tabindex="-1"></a>  <span class="fu">group_by</span>(gender) <span class="sc">%&gt;%</span></span>
+<span id="cb31-4"><a href="#cb31-4" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">count =</span> <span class="fu">n</span>(), <span class="at">.groups =</span> <span class="st">&#39;drop&#39;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb31-5"><a href="#cb31-5" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">unit =</span> <span class="st">&#39;212&#39;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb31-6"><a href="#cb31-6" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(count))</span>
+<span id="cb31-7"><a href="#cb31-7" tabindex="-1"></a></span>
+<span id="cb31-8"><a href="#cb31-8" tabindex="-1"></a><span class="co"># Add unit column and sort by gender count for unit 215</span></span>
+<span id="cb31-9"><a href="#cb31-9" tabindex="-1"></a>gender_summary_215 <span class="ot">&lt;-</span> unit_215 <span class="sc">%&gt;%</span></span>
+<span id="cb31-10"><a href="#cb31-10" tabindex="-1"></a>  <span class="fu">group_by</span>(gender) <span class="sc">%&gt;%</span></span>
+<span id="cb31-11"><a href="#cb31-11" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">count =</span> <span class="fu">n</span>(), <span class="at">.groups =</span> <span class="st">&#39;drop&#39;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb31-12"><a href="#cb31-12" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">unit =</span> <span class="st">&#39;215&#39;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb31-13"><a href="#cb31-13" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(count))</span>
+<span id="cb31-14"><a href="#cb31-14" tabindex="-1"></a></span>
+<span id="cb31-15"><a href="#cb31-15" tabindex="-1"></a><span class="co"># Combine the gender summaries into one data frame</span></span>
+<span id="cb31-16"><a href="#cb31-16" tabindex="-1"></a>combined_gender_summary <span class="ot">&lt;-</span> <span class="fu">rbind</span>(gender_summary_212, gender_summary_215)</span>
+<span id="cb31-17"><a href="#cb31-17" tabindex="-1"></a></span>
+<span id="cb31-18"><a href="#cb31-18" tabindex="-1"></a><span class="co"># Display combined and sorted gender summary</span></span>
+<span id="cb31-19"><a href="#cb31-19" tabindex="-1"></a><span class="fu">print</span>(<span class="st">&quot;Combined and Sorted Gender Summary&quot;</span>)</span></code></pre></div>
+<pre><code>## [1] &quot;Combined and Sorted Gender Summary&quot;</code></pre>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" tabindex="-1"></a><span class="fu">print</span>(combined_gender_summary)</span></code></pre></div>
+<pre><code>## # A tibble: 6 × 3
+##   gender count unit 
+##   &lt;chr&gt;  &lt;int&gt; &lt;chr&gt;
+## 1 male     259 212  
+## 2 &lt;NA&gt;      72 212  
+## 3 female    61 212  
+## 4 male     233 215  
+## 5 female    81 215  
+## 6 &lt;NA&gt;      68 215</code></pre>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" tabindex="-1"></a>race_summary_212 <span class="ot">&lt;-</span> unit_212 <span class="sc">%&gt;%</span></span>
+<span id="cb35-2"><a href="#cb35-2" tabindex="-1"></a>  <span class="fu">group_by</span>(race) <span class="sc">%&gt;%</span></span>
+<span id="cb35-3"><a href="#cb35-3" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">count =</span> <span class="fu">n</span>(), <span class="at">.groups =</span> <span class="st">&#39;drop&#39;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb35-4"><a href="#cb35-4" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">unit =</span> <span class="st">&#39;212&#39;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb35-5"><a href="#cb35-5" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(count))</span>
+<span id="cb35-6"><a href="#cb35-6" tabindex="-1"></a></span>
+<span id="cb35-7"><a href="#cb35-7" tabindex="-1"></a><span class="co"># Add unit column and sort by race count for unit 215</span></span>
+<span id="cb35-8"><a href="#cb35-8" tabindex="-1"></a>race_summary_215 <span class="ot">&lt;-</span> unit_215 <span class="sc">%&gt;%</span></span>
+<span id="cb35-9"><a href="#cb35-9" tabindex="-1"></a>  <span class="fu">group_by</span>(race) <span class="sc">%&gt;%</span></span>
+<span id="cb35-10"><a href="#cb35-10" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">count =</span> <span class="fu">n</span>(), <span class="at">.groups =</span> <span class="st">&#39;drop&#39;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb35-11"><a href="#cb35-11" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">unit =</span> <span class="st">&#39;215&#39;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb35-12"><a href="#cb35-12" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(count))</span>
+<span id="cb35-13"><a href="#cb35-13" tabindex="-1"></a></span>
+<span id="cb35-14"><a href="#cb35-14" tabindex="-1"></a><span class="co"># Combine the race summaries into one data frame</span></span>
+<span id="cb35-15"><a href="#cb35-15" tabindex="-1"></a>combined_race_summary <span class="ot">&lt;-</span> <span class="fu">rbind</span>(race_summary_212, race_summary_215)</span>
+<span id="cb35-16"><a href="#cb35-16" tabindex="-1"></a></span>
+<span id="cb35-17"><a href="#cb35-17" tabindex="-1"></a><span class="co"># Display combined and sorted race summary</span></span>
+<span id="cb35-18"><a href="#cb35-18" tabindex="-1"></a><span class="fu">print</span>(<span class="st">&quot;Combined and Sorted Race Summary&quot;</span>)</span></code></pre></div>
+<pre><code>## [1] &quot;Combined and Sorted Race Summary&quot;</code></pre>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" tabindex="-1"></a><span class="fu">print</span>(combined_race_summary)</span></code></pre></div>
+<pre><code>## # A tibble: 9 × 3
+##   race     count unit 
+##   &lt;chr&gt;    &lt;int&gt; &lt;chr&gt;
+## 1 white      222 212  
+## 2 Asian      116 212  
+## 3 Hispanic    28 212  
+## 4 black       24 212  
+## 5 other        2 212  
+## 6 white      194 215  
+## 7 Asian      152 215  
+## 8 black       24 215  
+## 9 Hispanic    12 215</code></pre>
+<p>prepare data for the plot</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" tabindex="-1"></a>summary_212 <span class="ot">&lt;-</span> unit_212 <span class="sc">%&gt;%</span></span>
+<span id="cb39-2"><a href="#cb39-2" tabindex="-1"></a>  <span class="fu">group_by</span>(gender, race) <span class="sc">%&gt;%</span></span>
+<span id="cb39-3"><a href="#cb39-3" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">count =</span> <span class="fu">n</span>(), <span class="at">.groups =</span> <span class="st">&#39;drop&#39;</span>)</span>
+<span id="cb39-4"><a href="#cb39-4" tabindex="-1"></a></span>
+<span id="cb39-5"><a href="#cb39-5" tabindex="-1"></a>summary_215 <span class="ot">&lt;-</span> unit_215 <span class="sc">%&gt;%</span></span>
+<span id="cb39-6"><a href="#cb39-6" tabindex="-1"></a>  <span class="fu">group_by</span>(gender, race) <span class="sc">%&gt;%</span></span>
+<span id="cb39-7"><a href="#cb39-7" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">count =</span> <span class="fu">n</span>(), <span class="at">.groups =</span> <span class="st">&#39;drop&#39;</span>)</span>
+<span id="cb39-8"><a href="#cb39-8" tabindex="-1"></a></span>
+<span id="cb39-9"><a href="#cb39-9" tabindex="-1"></a><span class="co">#combine data</span></span>
+<span id="cb39-10"><a href="#cb39-10" tabindex="-1"></a></span>
+<span id="cb39-11"><a href="#cb39-11" tabindex="-1"></a>summary_212<span class="sc">$</span>unit <span class="ot">&lt;-</span> <span class="st">&#39;212&#39;</span></span>
+<span id="cb39-12"><a href="#cb39-12" tabindex="-1"></a>summary_215<span class="sc">$</span>unit <span class="ot">&lt;-</span> <span class="st">&#39;215&#39;</span></span>
+<span id="cb39-13"><a href="#cb39-13" tabindex="-1"></a></span>
+<span id="cb39-14"><a href="#cb39-14" tabindex="-1"></a>combined_summary <span class="ot">&lt;-</span> <span class="fu">rbind</span>(summary_212, summary_215)</span></code></pre></div>
+<p>plot demographic</p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb40-2"><a href="#cb40-2" tabindex="-1"></a></span>
+<span id="cb40-3"><a href="#cb40-3" tabindex="-1"></a><span class="fu">ggplot</span>(combined_summary, <span class="fu">aes</span>(<span class="at">fill =</span> race, <span class="at">x =</span> gender, <span class="at">y =</span> count)) <span class="sc">+</span> </span>
+<span id="cb40-4"><a href="#cb40-4" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">position =</span> <span class="st">&quot;dodge&quot;</span>, <span class="at">stat =</span> <span class="st">&quot;identity&quot;</span>) <span class="sc">+</span></span>
+<span id="cb40-5"><a href="#cb40-5" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>unit) <span class="sc">+</span></span>
+<span id="cb40-6"><a href="#cb40-6" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Demographics of Examiners by Unit&quot;</span>,</span>
+<span id="cb40-7"><a href="#cb40-7" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;Gender&quot;</span>,</span>
+<span id="cb40-8"><a href="#cb40-8" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;Count&quot;</span>) <span class="sc">+</span></span>
+<span id="cb40-9"><a href="#cb40-9" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<h3 id="gender"><strong>Gender:</strong></h3>
+<ul>
+<li><p><strong>Unit 212</strong>: Has a higher number of male examiners
+(259) compared to female (61), with 72 examiners whose gender is not
+available (NA).</p></li>
+<li><p><strong>Unit 215</strong>: Also has more male examiners (233)
+than female (81), with a slightly lower number of NA gender data
+(68).</p></li>
+</ul>
+<h3 id="race"><strong>Race:</strong></h3>
+<ul>
+<li><p><strong>Unit 212</strong>: Predominantly white (222), followed by
+Asian (116), Hispanic (28), black (24), and other (2).</p></li>
+<li><p><strong>Unit 215</strong>: Again, predominantly white (194), but
+with a higher count of Asians (152) than unit 212, followed by black
+(24), and Hispanic (12).</p></li>
+</ul>
+<h3 id="overall"><strong>Overall:</strong></h3>
+<ul>
+<li><p><strong>Gender</strong>: Both units show a higher proportion of
+male examiners, but unit 215 is relatively more balanced in gender
+distribution than unit 212.</p></li>
+<li><p><strong>Race</strong>: Both units are predominantly white, but
+unit 215 has a larger proportion of Asian examiners, while unit 212 has
+more Hispanic examiners. Both units have the same number of black
+examiners.</p></li>
+</ul>
+<h2 id="create-advice-networks-from-edges_sample-and-calculate-centrality-scores-for-examiners-in-your-selected-workgroups">Create
+advice networks from `edges_sample` and calculate centrality scores for
+examiners in your selected workgroups</h2>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" tabindex="-1"></a><span class="co">#read data</span></span>
+<span id="cb41-2"><a href="#cb41-2" tabindex="-1"></a>edge <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">&#39;edges_sample.csv&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" tabindex="-1"></a><span class="fu">library</span>(igraph)</span></code></pre></div>
+<pre><code>## Warning: package &#39;igraph&#39; was built under R version 4.2.3
+
+## 
+## Attaching package: &#39;igraph&#39;
+
+## The following objects are masked from &#39;package:lubridate&#39;:
+## 
+##     %--%, union
+
+## The following objects are masked from &#39;package:dplyr&#39;:
+## 
+##     as_data_frame, groups, union
+
+## The following objects are masked from &#39;package:purrr&#39;:
+## 
+##     compose, simplify
+
+## The following object is masked from &#39;package:tidyr&#39;:
+## 
+##     crossing
+
+## The following object is masked from &#39;package:tibble&#39;:
+## 
+##     as_data_frame
+
+## The following objects are masked from &#39;package:stats&#39;:
+## 
+##     decompose, spectrum
+
+## The following object is masked from &#39;package:base&#39;:
+## 
+##     union</code></pre>
+<p>create networks</p>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" tabindex="-1"></a>g <span class="ot">&lt;-</span> <span class="fu">graph_from_data_frame</span>(<span class="at">d =</span> edge[, <span class="fu">c</span>(<span class="st">&quot;ego_examiner_id&quot;</span>, <span class="st">&quot;alter_examiner_id&quot;</span>)], <span class="at">directed =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<pre><code>## Warning in graph_from_data_frame(d = edge[, c(&quot;ego_examiner_id&quot;,
+## &quot;alter_examiner_id&quot;)], : In `d&#39; `NA&#39; elements were replaced with string &quot;NA&quot;</code></pre>
+<p>Calculate centralities</p>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" tabindex="-1"></a>degree_centrality <span class="ot">&lt;-</span> <span class="fu">degree</span>(g, <span class="at">mode =</span> <span class="st">&quot;all&quot;</span>)</span>
+<span id="cb46-2"><a href="#cb46-2" tabindex="-1"></a>betweenness_centrality <span class="ot">&lt;-</span> <span class="fu">betweenness</span>(g, <span class="at">directed =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb46-3"><a href="#cb46-3" tabindex="-1"></a>closeness_centrality <span class="ot">&lt;-</span> <span class="fu">closeness</span>(g)</span></code></pre></div>
+<p>merge score back to original unit212&amp;215 dataset</p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" tabindex="-1"></a>centrality_scores <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb47-2"><a href="#cb47-2" tabindex="-1"></a>  <span class="at">examiner_id =</span> <span class="fu">V</span>(g)<span class="sc">$</span>name,</span>
+<span id="cb47-3"><a href="#cb47-3" tabindex="-1"></a>  <span class="at">degree =</span> degree_centrality,</span>
+<span id="cb47-4"><a href="#cb47-4" tabindex="-1"></a>  <span class="at">betweenness =</span> betweenness_centrality,</span>
+<span id="cb47-5"><a href="#cb47-5" tabindex="-1"></a>  <span class="at">closeness =</span> closeness_centrality</span>
+<span id="cb47-6"><a href="#cb47-6" tabindex="-1"></a>)</span>
+<span id="cb47-7"><a href="#cb47-7" tabindex="-1"></a></span>
+<span id="cb47-8"><a href="#cb47-8" tabindex="-1"></a>unit_212<span class="sc">$</span>examiner_id <span class="ot">&lt;-</span> <span class="fu">as.character</span>(unit_212<span class="sc">$</span>examiner_id)</span>
+<span id="cb47-9"><a href="#cb47-9" tabindex="-1"></a>unit_215<span class="sc">$</span>examiner_id <span class="ot">&lt;-</span> <span class="fu">as.character</span>(unit_215<span class="sc">$</span>examiner_id)</span>
+<span id="cb47-10"><a href="#cb47-10" tabindex="-1"></a>centrality_scores<span class="sc">$</span>examiner_id <span class="ot">&lt;-</span> <span class="fu">as.character</span>(centrality_scores<span class="sc">$</span>examiner_id)</span>
+<span id="cb47-11"><a href="#cb47-11" tabindex="-1"></a></span>
+<span id="cb47-12"><a href="#cb47-12" tabindex="-1"></a></span>
+<span id="cb47-13"><a href="#cb47-13" tabindex="-1"></a>unit_212_with_scores <span class="ot">&lt;-</span> unit_212 <span class="sc">%&gt;%</span></span>
+<span id="cb47-14"><a href="#cb47-14" tabindex="-1"></a>  <span class="fu">left_join</span>(centrality_scores, <span class="at">by =</span> <span class="st">&quot;examiner_id&quot;</span>)</span>
+<span id="cb47-15"><a href="#cb47-15" tabindex="-1"></a></span>
+<span id="cb47-16"><a href="#cb47-16" tabindex="-1"></a>unit_215_with_scores <span class="ot">&lt;-</span> unit_215 <span class="sc">%&gt;%</span></span>
+<span id="cb47-17"><a href="#cb47-17" tabindex="-1"></a>  <span class="fu">left_join</span>(centrality_scores, <span class="at">by =</span> <span class="st">&quot;examiner_id&quot;</span>)</span></code></pre></div>
+<p>visualize the centrality score distribution based on gender</p>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" tabindex="-1"></a>unit_212_ids <span class="ot">&lt;-</span> <span class="fu">unique</span>(unit_212<span class="sc">$</span>examiner_id)</span>
+<span id="cb48-2"><a href="#cb48-2" tabindex="-1"></a>unit_215_ids <span class="ot">&lt;-</span> <span class="fu">unique</span>(unit_215<span class="sc">$</span>examiner_id)</span>
+<span id="cb48-3"><a href="#cb48-3" tabindex="-1"></a></span>
+<span id="cb48-4"><a href="#cb48-4" tabindex="-1"></a><span class="co"># Combine the centrality scores from both units</span></span>
+<span id="cb48-5"><a href="#cb48-5" tabindex="-1"></a>combined_centrality_scores <span class="ot">&lt;-</span> <span class="fu">rbind</span>(unit_212_with_scores, unit_215_with_scores) <span class="sc">%&gt;%</span></span>
+<span id="cb48-6"><a href="#cb48-6" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">unit =</span> <span class="fu">ifelse</span>(examiner_id <span class="sc">%in%</span> unit_212_ids, <span class="st">&#39;212&#39;</span>, <span class="st">&#39;215&#39;</span>))</span>
+<span id="cb48-7"><a href="#cb48-7" tabindex="-1"></a></span>
+<span id="cb48-8"><a href="#cb48-8" tabindex="-1"></a><span class="co"># Now create combined histograms based on gender</span></span>
+<span id="cb48-9"><a href="#cb48-9" tabindex="-1"></a></span>
+<span id="cb48-10"><a href="#cb48-10" tabindex="-1"></a><span class="co"># Histograms for degree centrality distribution</span></span>
+<span id="cb48-11"><a href="#cb48-11" tabindex="-1"></a><span class="fu">ggplot</span>(combined_centrality_scores, <span class="fu">aes</span>(<span class="at">x =</span> degree, <span class="at">fill =</span> gender)) <span class="sc">+</span></span>
+<span id="cb48-12"><a href="#cb48-12" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">30</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>, <span class="at">position =</span> <span class="st">&#39;identity&#39;</span>) <span class="sc">+</span></span>
+<span id="cb48-13"><a href="#cb48-13" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&#39;Combined Degree Centrality Distribution&#39;</span>, <span class="at">x =</span> <span class="st">&#39;Degree Centrality&#39;</span>, <span class="at">y =</span> <span class="st">&#39;Frequency&#39;</span>) <span class="sc">+</span></span>
+<span id="cb48-14"><a href="#cb48-14" tabindex="-1"></a>  <span class="fu">facet_grid</span>(. <span class="sc">~</span> unit) <span class="sc">+</span></span>
+<span id="cb48-15"><a href="#cb48-15" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div>
+<pre><code>## Warning: Removed 313 rows containing non-finite outside the scale range
+## (`stat_bin()`).</code></pre>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" tabindex="-1"></a><span class="fu">ggplot</span>(combined_centrality_scores, <span class="fu">aes</span>(<span class="at">x =</span> betweenness, <span class="at">fill =</span> gender)) <span class="sc">+</span></span>
+<span id="cb50-2"><a href="#cb50-2" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">30</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>, <span class="at">position =</span> <span class="st">&#39;identity&#39;</span>) <span class="sc">+</span></span>
+<span id="cb50-3"><a href="#cb50-3" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&#39;Combined Betweenness Centrality Distribution&#39;</span>, <span class="at">x =</span> <span class="st">&#39;Betweenness Centrality&#39;</span>, <span class="at">y =</span> <span class="st">&#39;Frequency&#39;</span>) <span class="sc">+</span></span>
+<span id="cb50-4"><a href="#cb50-4" tabindex="-1"></a>  <span class="fu">facet_grid</span>(. <span class="sc">~</span> unit) <span class="sc">+</span></span>
+<span id="cb50-5"><a href="#cb50-5" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div>
+<pre><code>## Warning: Removed 313 rows containing non-finite outside the scale range
+## (`stat_bin()`).</code></pre>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" tabindex="-1"></a><span class="fu">ggplot</span>(combined_centrality_scores, <span class="fu">aes</span>(<span class="at">x =</span> closeness, <span class="at">fill =</span> gender)) <span class="sc">+</span></span>
+<span id="cb52-2"><a href="#cb52-2" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">30</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>, <span class="at">position =</span> <span class="st">&#39;identity&#39;</span>) <span class="sc">+</span></span>
+<span id="cb52-3"><a href="#cb52-3" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&#39;Combined Closeness Centrality Distribution&#39;</span>, <span class="at">x =</span> <span class="st">&#39;Closeness Centrality&#39;</span>, <span class="at">y =</span> <span class="st">&#39;Frequency&#39;</span>) <span class="sc">+</span></span>
+<span id="cb52-4"><a href="#cb52-4" tabindex="-1"></a>  <span class="fu">facet_grid</span>(. <span class="sc">~</span> unit) <span class="sc">+</span></span>
+<span id="cb52-5"><a href="#cb52-5" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div>
+<pre><code>## Warning: Removed 473 rows containing non-finite outside the scale range
+## (`stat_bin()`).</code></pre>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<h3 id="choice-of-centrality-measures">Choice of Centrality
+Measures</h3>
+<ul>
+<li><p><strong>Degree Centrality</strong> - my primary measure because
+it reflects immediate engagement in the advice process. It’s
+straightforward and indicates how involved individuals are in the
+network.</p></li>
+<li><p><strong>Betweenness Centrality</strong> - the secondary measure,
+valuable for identifying those who have control over the information
+flow between other members of the network. High betweenness centrality
+individuals are key to maintaining network cohesion and can be crucial
+for targeted interventions.</p></li>
+</ul>
+<h3 id="characterize-and-discuss-the-relationship-between-centrality-and-other-examiners-characteristics">Characterize
+and discuss the relationship between centrality and other examiners’
+characteristics</h3>
+<h4 id="degree-centrality"><strong>Degree Centrality:</strong></h4>
+<p>The “Combined Degree Centrality Distribution” histogram shows that in
+both units, male examiners tend to have a higher degree centrality than
+females and those whose gender is not available (NA). This suggests that
+male examiners might be more actively involved in giving and receiving
+advice within these units.</p>
+<h4 id="betweenness-centrality"><strong>Betweenness
+Centrality:</strong></h4>
+<p>From the “Combined Betweenness Centrality Distribution” histogram, it
+appears that male examiners also tend to have higher betweenness
+centrality scores, indicating they often act as bridges in the
+communication paths of the network. If few individuals are critical for
+the flow of information, it might indicate that targeting these key
+players could effectively spread important messages or changes
+throughout the network.</p>
+<h4 id="demographics"><strong>Demographics:</strong></h4>
+<p>The “Demographics of Examiners by Unit” graph indicates that there
+are more male examiners in both units. This majority may contribute to
+the skew in centrality measures towards males.</p>
+<h4 id="gender-centrality-relationship"><strong>Gender Centrality
+Relationship:</strong></h4>
+<p>Considering the histograms and the demographic data together, it
+seems there is a relationship between gender and centrality measures in
+your data, with male examiners generally showing higher centrality. This
+could reflect a variety of factors, such as:</p>
+<ul>
+<li><p><strong>Network Position</strong>: Male examiners may occupy more
+central roles within the network due to a larger number of connections
+or being at strategic points in the network structure.</p></li>
+<li><p><strong>Activity Levels</strong>: The higher centrality scores
+for males could be due to higher activity levels—more interactions or
+involvement in the advice-giving process.</p></li>
+<li><p><strong>Influence and Hierarchical Positions</strong>: If
+centrality correlates with seniority or influence, it might indicate
+that male examiners hold positions that naturally result in higher
+centrality due to their roles within the organization.</p></li>
+</ul>
+
+</body>
+</html>
